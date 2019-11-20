@@ -90,20 +90,6 @@ public class TestRepositorio {
             vr.getAll().forEach(System.out::println);
             System.out.println("*****************************");
             
-            I_PremiosRepositorio pr=new PremioRepositorio(conn);
-            Premio premio = new Premio("Robert Parker Wine Advocate", 90, Medalla.oro, 2010, 13);
-            pr.save(premio);
-            System.out.println(premio);
-            System.out.println("****************************");
-            pr.remove(pr.getById(1));
-            premio=pr.getById(10);
-            premio.setNombre_premio("XXC");
-            premio.setMedalla(Medalla.plata);
-            premio.setAno(2012);
-            pr.update(premio);
-            pr.getAll().forEach(System.out::println);
-            System.out.println("*****************************");
-            
             I_RankingRepositorio rr=new RankingRepositorio(conn); 
             Ranking ranking=new Ranking(RankingEnum.r4, 2, 13, 20);
             rr.save(ranking);
@@ -117,6 +103,22 @@ public class TestRepositorio {
             ranking.setTienda_id(1);
             rr.update(ranking);
             rr.getAll().forEach(System.out::println);
+            System.out.println("*****************************");
+            
+            I_PremiosRepositorio pr=new PremioRepositorio(conn);
+            Premio premio = new Premio(0,"Robert Parker Wine Advocate", 0,Medalla.oro,2010, 13);
+            pr.save(premio);
+            pr.remove(pr.getById(80));
+            System.out.println(premio);
+            System.out.println("****************************");
+            premio=pr.getById(81);
+            premio.setNombre_premio("jamessuckling.com");
+            premio.setPuntaje(95);
+            premio.setMedalla(Medalla.plata);
+            premio.setAno(2012);
+            pr.update(premio);
+            pr.getAll();
+            System.out.println(premio);
             System.out.println("*****************************");
             
         } catch (Exception e) {e.printStackTrace();}

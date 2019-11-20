@@ -129,5 +129,3 @@ left join   rankings
 on          rankings.tienda_id=tiendas.`tienda_id`
 where       rankings.`tienda_id` is null;   
        
-select * from premios;
-

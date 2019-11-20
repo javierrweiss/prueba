@@ -1,2 +1,8 @@
 package trabajopracticopoo2.vinoapp.enumerados;
-public enum Medalla {oro, plata, bronce}
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape=JsonFormat.Shape.OBJECT)
+public enum Medalla{oro,plata,bronce;}
+
+    

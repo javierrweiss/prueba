@@ -34,7 +34,6 @@ public interface I_PremiosRepositorio {
     }
     
     default List<Premio> getByMedalla(Medalla medalla){
-    if(medalla==null) return new ArrayList<>();
         return getAll()
                .stream()
                .filter(p->p.getMedalla().equals(medalla))
@@ -46,14 +45,6 @@ public interface I_PremiosRepositorio {
                .stream()
                .filter(p->p.getAno()==ano)
                .collect(Collectors.toList());
-    }
-    
-    default Premio getLikeVino(int vino_id){
-        return getAll()
-               .stream()
-               .filter(p->p.getVino_id()==vino_id)
-               .findFirst()
-               .get();
     }
     
   }

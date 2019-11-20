@@ -11,14 +11,15 @@ private int vino_id;
     public Premio() {
     }
 
-    public Premio(String nombre_premio, int puntaje, Medalla medalla, int ano, int vino_id) {
-        this.nombre_premio = nombre_premio;
-        this.puntaje = puntaje;
-        this.medalla = medalla;
-        this.ano = ano;
-        this.vino_id = vino_id;
-    }
-
+/**
+ * Constructor con todos los parámetros 
+ * @param premio_id
+ * @param nombre_premio
+ * @param puntaje
+ * @param medalla
+ * @param ano
+ * @param vino_id 
+ */
     public Premio(int premio_id, String nombre_premio, int puntaje, Medalla medalla, int ano, int vino_id) {
         this.premio_id = premio_id;
         this.nombre_premio = nombre_premio;

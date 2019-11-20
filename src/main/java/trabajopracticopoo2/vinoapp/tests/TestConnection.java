@@ -19,7 +19,7 @@ public class TestConnection {
             
             conn.createStatement().execute(
             "insert into premios(premio_id,nombre_premio,puntaje,medalla,ano,vino_id)" 
-                    + "values(null,'Decanter World Wine Awards',88,null,2015,null)"
+                    + "values(null,'Decanter World Wine Awards',88,null,2015,56)"
             );
         } catch (Exception e) {e.printStackTrace();}
     }

@@ -32,10 +32,11 @@ public class JInicio extends javax.swing.JFrame {
         pswContraseña = new javax.swing.JPasswordField();
         txtUsuario = new javax.swing.JTextField();
         btnIngresar = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
         btnRegistarse = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Vinoapp");
 
         lblUsuario.setText("Usuario");
 
@@ -55,9 +56,9 @@ public class JInicio extends javax.swing.JFrame {
 
         btnIngresar.setText("Ingresar");
 
-        jTextField1.setText("¿No estás registrado?");
-
         btnRegistarse.setText("Registrarse");
+
+        jLabel1.setText("¿No estás registrado?");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -76,9 +77,11 @@ public class JInicio extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblUsuario)
                         .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnRegistarse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRegistarse, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(jLabel1)))))
                 .addContainerGap(195, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -94,9 +97,9 @@ public class JInicio extends javax.swing.JFrame {
                     .addComponent(pswContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnIngresar)
-                .addGap(55, 55, 55)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(64, 64, 64)
+                .addComponent(jLabel1)
+                .addGap(26, 26, 26)
                 .addComponent(btnRegistarse)
                 .addContainerGap(170, Short.MAX_VALUE))
         );
@@ -150,7 +153,7 @@ public class JInicio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIngresar;
     private javax.swing.JButton btnRegistarse;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblContraseña;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JPasswordField pswContraseña;

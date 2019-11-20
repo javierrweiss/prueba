@@ -4,6 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import javax.sql.rowset.JdbcRowSet;
+import javax.sql.rowset.RowSetFactory;
+import javax.sql.rowset.RowSetProvider;
 import trabajopracticopoo2.vinoapp.entidades.Premio;
 import trabajopracticopoo2.vinoapp.enumerados.Medalla;
 import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_PremiosRepositorio;
@@ -52,16 +55,16 @@ private Connection conn;
         } catch (Exception e) {e.printStackTrace();}
     }
 
-    @Override
+   @Override
     public List<Premio> getAll() {
-    List<Premio> list=new ArrayList<>();
-        try (ResultSet rs=conn.createStatement().executeQuery("select * from premios");)
-            {
+       List<Premio> list=new ArrayList<>();
+        try (ResultSet rs=conn.createStatement().executeQuery("select * from premios");
+            ){
             while (rs.next()){ //inicio bloque while
                 list.add(new Premio(
                         rs.getInt("premio_id"),
                         rs.getString("nombre_premio"),
-                        rs.getInt("puntaje"),
+                        rs.getInt("puntaje"), 
                         Medalla.valueOf(rs.getString("medalla")),
                         rs.getInt("ano"),
                         rs.getInt("vino_id")
@@ -69,7 +72,6 @@ private Connection conn;
             } //fin bloque while
             
         }catch (Exception e) {e.printStackTrace();}
-    return list;
-    }
-    
+return list;
+    } 
 }
