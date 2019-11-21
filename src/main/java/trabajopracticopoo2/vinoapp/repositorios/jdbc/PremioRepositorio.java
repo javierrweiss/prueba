@@ -61,11 +61,13 @@ private Connection conn;
         try (ResultSet rs=conn.createStatement().executeQuery("select * from premios");
             ){
             while (rs.next()){ //inicio bloque while
+                String medalla=rs.getString("medalla");
+                if (medalla==null || medalla.isEmpty()) medalla="nula"; 
                 list.add(new Premio(
                         rs.getInt("premio_id"),
                         rs.getString("nombre_premio"),
                         rs.getInt("puntaje"), 
-                        Medalla.valueOf(rs.getString("medalla")),
+                        Medalla.valueOf(medalla),
                         rs.getInt("ano"),
                         rs.getInt("vino_id")
                 ));

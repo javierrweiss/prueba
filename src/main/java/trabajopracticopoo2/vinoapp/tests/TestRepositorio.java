@@ -117,8 +117,7 @@ public class TestRepositorio {
             premio.setMedalla(Medalla.plata);
             premio.setAno(2012);
             pr.update(premio);
-            pr.getAll();
-            System.out.println(premio);
+            pr.getAll().forEach(System.out::println);
             System.out.println("*****************************");
             
         } catch (Exception e) {e.printStackTrace();}
