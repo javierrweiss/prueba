@@ -1,9 +1,14 @@
 package ar.org.centro8.curso.java.utils;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 public class Validator {
     private JTextField txt;
+    private JPasswordField psw;
     public Validator(JTextField txt) { this.txt = txt; }
+
+    public Validator(JPasswordField psw) {this.psw = psw;}
+    
         private boolean error(String mensaje){
         JOptionPane.showMessageDialog(txt, mensaje,"Error",
                 JOptionPane.ERROR_MESSAGE);
@@ -33,5 +38,11 @@ public class Validator {
         int nro=Integer.parseInt(txt.getText());
         if(nro>=min && nro<=max) return true;
         return error("Debe ser un número entero entre "+min+" y "+max);
+    }
+    
+    public boolean passwordValidation (JPasswordField psw){
+    char[] clave= psw.getPassword();
+     //   if () 
+     return true;   
     }
 }

@@ -1,6 +1,10 @@
 package trabajopracticopoo2.vinoapp.entidades;
-public class Usuario {
-private int usuario_id;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Usuario implements Serializable{
+private transient int usuario_id;
 private String cuenta_usuario;    
 private String nombre;    
 private String apellido;
@@ -124,6 +128,36 @@ private String nota_de_cata;
         this.nota_de_cata = nota_de_cata;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + this.usuario_id;
+        hash = 29 * hash + Objects.hashCode(this.cuenta_usuario);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (this.usuario_id != other.usuario_id) {
+            return false;
+        }
+        if (!Objects.equals(this.cuenta_usuario, other.cuenta_usuario)) {
+            return false;
+        }
+        return true;
+    }
+
+    
 
    
 }

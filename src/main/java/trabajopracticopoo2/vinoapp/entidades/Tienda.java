@@ -1,6 +1,9 @@
 package trabajopracticopoo2.vinoapp.entidades;
-public class Tienda {
-private int tienda_id;    
+
+import java.io.Serializable;
+
+public class Tienda implements Serializable{
+private transient int tienda_id;    
 private String nombre_T;    
 private String pais;    
 private String ciudad;    

@@ -1,8 +1,10 @@
 package trabajopracticopoo2.vinoapp.entidades;
+import java.io.Serializable;
+import java.util.Objects;
 import trabajopracticopoo2.vinoapp.enumerados.Categoria;
 import trabajopracticopoo2.vinoapp.enumerados.Color;
-public class Vino {
-private int vino_id;
+public class Vino implements Serializable{
+private transient int vino_id;
 private String nombre;
 private String cepas;
 private Color color;
@@ -115,4 +117,34 @@ private String terruno;
         this.terruno = terruno;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + this.vino_id;
+        hash = 53 * hash + Objects.hashCode(this.nombre);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vino other = (Vino) obj;
+        if (this.vino_id != other.vino_id) {
+            return false;
+        }
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        return true;
+    }
+
+    
 }

@@ -22,7 +22,7 @@ public interface I_RankingRepositorio {
                .filter(r->r.getRanking().equals(ranking))
                .collect(Collectors.toList());
     }
-    default Ranking getLikeUsuario(int usuario_id){
+    default Ranking getByUsuario(int usuario_id){
         return getAll()
                .stream()
                .filter(r->r.getUsuario_id()==usuario_id)

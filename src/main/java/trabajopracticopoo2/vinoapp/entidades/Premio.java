@@ -1,7 +1,8 @@
 package trabajopracticopoo2.vinoapp.entidades;
+import java.io.Serializable;
 import trabajopracticopoo2.vinoapp.enumerados.Medalla;
-public class Premio {
-private int premio_id;
+public class Premio implements Serializable{
+private transient int premio_id;
 private String  nombre_premio;    
 private int     puntaje;
 private Medalla medalla;  

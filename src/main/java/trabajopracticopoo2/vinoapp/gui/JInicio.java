@@ -24,6 +24,11 @@ public class JInicio extends javax.swing.JFrame {
         lblContraseña.setText("Contraseña");
 
         btnIngresar.setText("Ingresar");
+        btnIngresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIngresarActionPerformed(evt);
+            }
+        });
 
         btnRegistarse.setText("Registrarse");
         btnRegistarse.addActionListener(new java.awt.event.ActionListener() {
@@ -86,6 +91,11 @@ public class JInicio extends javax.swing.JFrame {
     FormularioDeRegistro fr=new FormularioDeRegistro(this, true); 
     fr.setVisible(true);
     }//GEN-LAST:event_btnRegistarseActionPerformed
+
+    private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+        // Evento ingresar
+        
+    }//GEN-LAST:event_btnIngresarActionPerformed
 
   
     public static void main(String args[]) {

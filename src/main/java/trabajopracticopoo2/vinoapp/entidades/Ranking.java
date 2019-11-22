@@ -1,11 +1,12 @@
 package trabajopracticopoo2.vinoapp.entidades;
+import java.io.Serializable;
 import trabajopracticopoo2.vinoapp.enumerados.RankingEnum;
-public class Ranking {
-private int ranking_id;
+public class Ranking implements Serializable{
+private transient int ranking_id;
 private RankingEnum ranking;
-private int usuario_id;
-private int vino_id;
-private int tienda_id;
+private transient int usuario_id;
+private transient int vino_id;
+private transient int tienda_id;
 
     public Ranking() {
     }

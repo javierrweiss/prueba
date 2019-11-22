@@ -1,6 +1,9 @@
 package trabajopracticopoo2.vinoapp.entidades;
-public class Bodega {
-private int bodega_id;
+
+import java.io.Serializable;
+
+public class Bodega implements Serializable{
+private transient int bodega_id;
 private String nombre_bodega; 
 private String pais; 
 private String ubicacion;
