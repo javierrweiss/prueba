@@ -1,9 +1,17 @@
 package trabajopracticopoo2.vinoapp.gui;
-public class FormularioDeRegistro extends javax.swing.JDialog {
 
+import javax.swing.JPasswordField;
+import trabajopracticopoo2.vinoapp.entidades.Usuario;
+import trabajopracticopoo2.vinoapp.repositorios.jdbc.UsuarioRepositorio;
+
+public class FormularioDeRegistro extends javax.swing.JDialog{
+    UsuarioRepositorio ur=null;
+    protected static String nueva_cuenta_usuario;
+    protected static char[] clave;
     public FormularioDeRegistro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -52,6 +60,11 @@ public class FormularioDeRegistro extends javax.swing.JDialog {
         jLabel9.setText("Código Postal");
 
         btnRegistrarse.setText("Registrarse");
+        btnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarseActionPerformed(evt);
+            }
+        });
 
         jLabel10.setText("Clave");
 
@@ -159,6 +172,46 @@ public class FormularioDeRegistro extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
+        // Evento registrarse
+            //Registro de clave
+        JPasswordField psw=new JPasswordField();
+        clave=psw.getPassword();
+            //Registro de usuario
+        nueva_cuenta_usuario = txtCuentaUsuario.getText();
+        String nombre= txtNombre.getText(); 
+        String apellido= txtApellido.getText();
+        String pais= txtPais.getText();
+        String region= txtRegion.getText();
+        String ciudad= txtCiudad.getText();
+        String email= txtEmail.getText();
+        String cod_postal=TxtCodPostal.getText();
+        
+        Usuario u = new Usuario(nueva_cuenta_usuario, nombre, apellido, pais, 
+                region, ciudad, email, cod_postal, null);    
+//        u.setCuenta_usuario(nueva_cuenta_usuario);
+//            //Registro de nombre
+//        u.setNombre(nombre);
+//            //Registro de Apellido
+//        u.setApellido(apellido);
+//            //Registro de País
+//        u.setPais(pais);
+//            //Registro de Región
+//        u.setRegion(region);
+//            //Registro de ciudad
+//        u.setCiudad(ciudad);
+//            //Registro de email
+//        u.setEmail(email);
+//            //Registro Código Postal
+//        u.setCod_postal(cod_postal);
+//            //Guardando datos al repositorio
+        ur.save(u);
+        
+        MenuPrincipal mP = new MenuPrincipal();
+        mP.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     /**
      * @param args the command line arguments

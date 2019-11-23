@@ -1,7 +1,14 @@
 package trabajopracticopoo2.vinoapp.gui;
+
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import static trabajopracticopoo2.vinoapp.gui.FormularioDeRegistro.clave;
+import static trabajopracticopoo2.vinoapp.gui.FormularioDeRegistro.nueva_cuenta_usuario;
+
 public class JInicio extends javax.swing.JFrame {
     public JInicio() {
         initComponents();
+        setLocationRelativeTo(null);
     }
     
     @SuppressWarnings("unchecked")
@@ -90,11 +97,21 @@ public class JInicio extends javax.swing.JFrame {
         // Evento resgistrarse
     FormularioDeRegistro fr=new FormularioDeRegistro(this, true); 
     fr.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_btnRegistarseActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         // Evento ingresar
-        
+    String usuario_ingresado=txtUsuario.getText();
+    JPasswordField psw= new JPasswordField();
+    char[] clave_ingresada=psw.getPassword();
+        if (clave_ingresada.equals(clave) && usuario_ingresado.equals(nueva_cuenta_usuario)) {
+            MenuPrincipal mP = new MenuPrincipal();
+            mP.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Usted ha introducido un usuario o una contraseña incorrecta");
+        }
+    this.dispose();        
     }//GEN-LAST:event_btnIngresarActionPerformed
 
   
