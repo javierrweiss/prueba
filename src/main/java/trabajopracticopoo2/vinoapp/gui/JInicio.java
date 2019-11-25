@@ -1,14 +1,20 @@
 package trabajopracticopoo2.vinoapp.gui;
 
+import java.sql.Connection;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import trabajopracticopoo2.vinoapp.connectors.Connector;
 import static trabajopracticopoo2.vinoapp.gui.FormularioDeRegistro.clave;
-import static trabajopracticopoo2.vinoapp.gui.FormularioDeRegistro.nueva_cuenta_usuario;
+import trabajopracticopoo2.vinoapp.repositorios.jdbc.UsuarioRepositorio;
 
 public class JInicio extends javax.swing.JFrame {
+    private JPasswordField psw= new JPasswordField("", 8);
+    UsuarioRepositorio ur; 
     public JInicio() {
         initComponents();
         setLocationRelativeTo(null);
+        ur = new UsuarioRepositorio(Connector.getConnection());
     }
     
     @SuppressWarnings("unchecked")
@@ -103,17 +109,18 @@ public class JInicio extends javax.swing.JFrame {
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         // Evento ingresar
     String usuario_ingresado=txtUsuario.getText();
-    JPasswordField psw= new JPasswordField();
     char[] clave_ingresada=psw.getPassword();
-        if (clave_ingresada.equals(clave) && usuario_ingresado.equals(nueva_cuenta_usuario)) {
+        if (Arrays.equals(clave, clave_ingresada) & ur.VerifyUsuario(usuario_ingresado)) {
             MenuPrincipal mP = new MenuPrincipal();
             mP.setVisible(true);
+            this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Usted ha introducido un usuario o una contraseña incorrecta");
         }
-    this.dispose();        
+        Arrays.fill(clave, '0');
+                
     }//GEN-LAST:event_btnIngresarActionPerformed
-
+ 
   
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

@@ -49,4 +49,11 @@ public class FileText implements I_FileText{
         } catch (Exception e) { e.printStackTrace(); }
         return list;
     }    
+
+    @Override
+    public void append(char[] text) {
+    try (FileWriter out=new FileWriter(file,true)) {
+            out.write(text);
+        } catch (Exception e) { e.printStackTrace(); } 
+    }
 }

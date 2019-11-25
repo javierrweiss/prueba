@@ -129,3 +129,5 @@ left join   rankings
 on          rankings.tienda_id=tiendas.`tienda_id`
 where       rankings.`tienda_id` is null;   
        
+-- select * from usuarios;
+-- delete from usuarios where usuario_id between 103 and 140;

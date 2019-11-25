@@ -1,4 +1,5 @@
 package ar.org.centro8.curso.java.utils;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
@@ -10,16 +11,18 @@ public interface I_FileText {
     String getText();
     void setText(String text);
     void append(String text);
+    void append(char[] text);
     default void addLine(String line)   { append(line+"\n");    }
     default void clear()                { setText("");          }
     List<String>getLines();
     default List<String>getLines(String filter){
-        if(filter==null) return new ArrayList<String>();
+        if(filter==null) return new ArrayList<>();
         return getLines()
                 .stream()
                 .filter(line->line.toLowerCase().contains(filter.toLowerCase()))
                 .collect(Collectors.toList());
     }
+    
     default List<String>getSortedLines(){
         return getLines()
                 .stream()

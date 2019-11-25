@@ -16,11 +16,17 @@ public interface I_UsuarioRepositorio {
                 .findFirst()
                 .orElse(new Usuario());
     }
-    default List<Usuario> getLikeCuenta(String cuenta_usuario){
+    default boolean VerifyUsuario(String cuenta_usuario) {
+    return getAll()
+           .stream()
+           .anyMatch(u->u.getCuenta_usuario().equals(cuenta_usuario));
+    }
+    
+    default List<Usuario> getByCuenta(String cuenta_usuario){
         if(cuenta_usuario==null) return new ArrayList<>();
         return getAll()
                 .stream()
-                .filter(u->u.getCuenta_usuario().contains(cuenta_usuario))
+                .filter(u->u.getCuenta_usuario().equals(cuenta_usuario))
                 .collect(Collectors.toList());
     } 
     default List<Usuario> getByPais(String pais){
@@ -35,6 +41,13 @@ public interface I_UsuarioRepositorio {
         return getAll()
                 .stream()
                 .filter(u->u.getCiudad().toLowerCase().contains(ciudad.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+    default List<Usuario> getByEmail(String email){
+        if(email==null) return new ArrayList<>();
+        return getAll()
+                .stream()
+                .filter(u->u.getEmail().contains(email))
                 .collect(Collectors.toList());
     }
 
