@@ -25,11 +25,6 @@ public class ServidorChatR implements Runnable{
                     for(String s:MapaDirecciones.getMapa().keySet()){
                         if(MapaDirecciones.getMapa().get(s).equals(ip)) nombre=s;
                     }
-                    LocalDateTime lDT = null;
-                    String fecha=lDT.toLocalDate().toString();
-                    String hora=lDT.toLocalTime().toString();
-                    String mensaje=in.readLine();
-                    txa.append(nombre+" tiene una nueva publicación: "+"\n"+mensaje+"\n"+fecha+hora+"\n");
                 } catch (Exception ee) { ee.printStackTrace(); }
             }
         } catch (Exception e) { e.printStackTrace(); }

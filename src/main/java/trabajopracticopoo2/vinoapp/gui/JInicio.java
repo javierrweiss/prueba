@@ -1,6 +1,5 @@
 package trabajopracticopoo2.vinoapp.gui;
 
-import java.sql.Connection;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -10,7 +9,8 @@ import trabajopracticopoo2.vinoapp.repositorios.jdbc.UsuarioRepositorio;
 
 public class JInicio extends javax.swing.JFrame {
     private JPasswordField psw= new JPasswordField("", 8);
-    UsuarioRepositorio ur; 
+    UsuarioRepositorio ur;
+    protected static String usernameInicio="";
     public JInicio() {
         initComponents();
         setLocationRelativeTo(null);
@@ -118,7 +118,7 @@ public class JInicio extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Usted ha introducido un usuario o una contraseña incorrecta");
         }
         Arrays.fill(clave, '0');
-                
+       usernameInicio=txtUsuario.getText();
     }//GEN-LAST:event_btnIngresarActionPerformed
  
   

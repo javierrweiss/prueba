@@ -2,6 +2,8 @@ package trabajopracticopoo2.vinoapp.repositorios.interfaces;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import trabajopracticopoo2.vinoapp.entidades.Bodega;
+import trabajopracticopoo2.vinoapp.entidades.Usuario;
 import trabajopracticopoo2.vinoapp.enumerados.Color;
 import trabajopracticopoo2.vinoapp.enumerados.Categoria;
 import trabajopracticopoo2.vinoapp.entidades.Vino;

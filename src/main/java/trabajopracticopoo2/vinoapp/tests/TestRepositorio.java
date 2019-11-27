@@ -1,5 +1,7 @@
 package trabajopracticopoo2.vinoapp.tests;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 import trabajopracticopoo2.vinoapp.connectors.Connector;
 import trabajopracticopoo2.vinoapp.entidades.Bodega;
 import trabajopracticopoo2.vinoapp.entidades.Premio;
@@ -107,7 +109,7 @@ public class TestRepositorio {
             
             I_PremiosRepositorio pr=new PremioRepositorio(conn);
             Premio premio = new Premio(0,"Robert Parker Wine Advocate", 0,Medalla.oro,2010, 13);
-            pr.save(premio);
+           pr.save(premio);
             pr.remove(pr.getById(80));
             System.out.println(premio);
             System.out.println("****************************");
@@ -119,7 +121,16 @@ public class TestRepositorio {
             pr.update(premio);
             pr.getAll().forEach(System.out::println);
             System.out.println("*****************************");
-            
+        //int ultimo_indicebodega=br.getAll().indexOf(bodega);
+//        int ultimo_indicevino=vr.getAll().indexOf(vino);
+//        List<String>lista=new ArrayList<>();
+//        lista.add(
+//        vr.getAll().get(ultimo_indicevino).toString());
+//        lista.add(
+//        br.getAll().get(ultimo_indicebodega).toString());
+//        lista.forEach(System.out::println);
+//System.out.println(ultimo_indicebodega);
+//System.out.println(ultimo_indicevino);
         } catch (Exception e) {e.printStackTrace();}
     }   
     

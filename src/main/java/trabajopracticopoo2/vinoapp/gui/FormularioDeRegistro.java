@@ -13,15 +13,13 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
     private static JPasswordField psw=new JPasswordField("", 8);
     protected static char[] clave=psw.getPassword();
     Validator val=new Validator();
+    Usuario u = new Usuario();
+    protected static String username=""; 
     public FormularioDeRegistro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         ur= new UsuarioRepositorio(Connector.getConnection());
-    }
-
-    private FormularioDeRegistro() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public void cargar(){
@@ -40,11 +38,11 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
     }
     
     public void saveInRepository(){
-        Usuario u = new Usuario(txtCuentaUsuario.getText(), txtNombre.getText(), 
+        var u = new Usuario(txtCuentaUsuario.getText(), txtNombre.getText(), 
                 txtApellido.getText(), cmbPais.getItemAt(cmbPais.getSelectedIndex()), txtRegion.getText(), 
                 txtCiudad.getText(), txtEmail.getText(), txtCodPostal.getText(), 
                 null);
-        ur.save(u);
+                ur.save(u);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -236,13 +234,10 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
         //Evento registrar
-        while (!validar()) {
-            
-        }
-        
-        
-        
-        
+       if(!validar()) return; 
+       saveInRepository();
+       cargar();
+       username=txtCuentaUsuario.getText();
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     /**

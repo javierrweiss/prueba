@@ -129,5 +129,12 @@ left join   rankings
 on          rankings.tienda_id=tiendas.`tienda_id`
 where       rankings.`tienda_id` is null;   
        
--- select * from usuarios;
--- delete from usuarios where usuario_id between 103 and 140;
+
+-- Consulta para recuperar vinos por usuario
+
+select v.nombre,v.cepas,v.color,v.cosecha,v.categoria,b.nombre_bodega,v.terruno 
+from vinos v
+join bodegas b on v.bodega_id=v.bodega_id
+join rankings r on r.vino_id=v.vino_id 
+join usuarios u on r.usuario_id=u.usuario_id 
+where u.cuenta_usuario=?;

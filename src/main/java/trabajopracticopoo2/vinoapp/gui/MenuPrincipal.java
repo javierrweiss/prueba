@@ -2,12 +2,22 @@ package trabajopracticopoo2.vinoapp.gui;
 
 import ar.org.centro8.curso.java.utils.Table;
 import chat.ServidorChatR;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 import javax.swing.JOptionPane;
 import trabajopracticopoo2.vinoapp.connectors.Connector;
+import trabajopracticopoo2.vinoapp.entidades.Vino;
+import trabajopracticopoo2.vinoapp.entidades.Bodega;
 import trabajopracticopoo2.vinoapp.enumerados.Categoria;
 import trabajopracticopoo2.vinoapp.enumerados.Color;
+import static trabajopracticopoo2.vinoapp.gui.FormularioDeRegistro.username;
 import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_BodegaRepositorio;
 import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_PremiosRepositorio;
 import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_RankingRepositorio;
@@ -28,6 +38,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     I_TiendaRepositorio tr;
     I_RankingRepositorio rr;
     I_VinoRepositorio vr;
+    Bodega b = new Bodega();
+    Vino v = new Vino();
     public MenuPrincipal() {
         initComponents();
         new Thread(new ServidorChatR(txaCompartir)).start();
@@ -37,8 +49,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         tr=new TiendaRepositorio(Connector.getConnection());
         rr=new RankingRepositorio(Connector.getConnection());
         vr=new VinoRepositorio(Connector.getConnection());
-        cargar();        
+        cargar();
     }
+    
+    
     public void cargar(){
         //Carga de comboBoxes
         cmbCategoria.removeAllItems();
@@ -47,15 +61,28 @@ public class MenuPrincipal extends javax.swing.JFrame {
         cmbColor.removeAllItems();
         for (Color co : Color.values()) cmbColor.addItem(co.toString());
         
-        //Carga de tabla de vinos registrados por el usuario
-        //new Table<Vino>().cargar(tblVinos, rr.);
-        
-        //Carga de publicaciones de otros usuarios
-        
-        
         //Carga de lista de notas de cata
                 
 }
+    
+    public void guardarBodega(){
+        b.setNombre_bodega(txtBodegaNV.getText());
+        b.setFundacion((int) ftxtFundacion.getValue());
+        br.save(b);
+    }
+    
+    public void guardarVino(){
+        v.setNombre(txtNombreNV.getText());
+        v.setCepas(txtCepasNV.getText());
+        v.setColor((Color) cmbColor.getSelectedItem());
+        v.setCosecha((int) ftxtCosecha.getValue());
+        v.setCategoria((Categoria) cmbCategoria.getSelectedItem());
+        v.setEnologo(txtEnologoNV.getText());
+        v.setBodega_id(0);
+        v.setTerruno(txtTerrunoNV.getText());
+        vr.save(v);
+    }
+    
     public void limpiarBusqueda(){
     txtBodega.setText("");
     txtCategoria.setText("");
@@ -76,9 +103,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     txtBodegaNV.setText("");
     txtCepasNV.setText("");
     txtColorNV.setText("");
-    txtCosechaNV.setText("");
+    ftxtCosecha.setText("");
     txtEnologoNV.setText("");
-    txtFundacionNV.setText("");
+    ftxtFundacion.setText("");
     txtNombreNV.setText("");
     txtNombreNV.requestFocusInWindow();
     }
@@ -131,8 +158,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         txtEnologoNV = new javax.swing.JTextField();
         txtBodegaNV = new javax.swing.JTextField();
         txtTerrunoNV = new javax.swing.JTextField();
-        txtCosechaNV = new javax.swing.JTextField();
-        txtFundacionNV = new javax.swing.JTextField();
         cmbColor = new javax.swing.JComboBox<>();
         cmbCategoria = new javax.swing.JComboBox<>();
         cmbPais = new javax.swing.JComboBox<>();
@@ -157,6 +182,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         btnGuardar = new javax.swing.JButton();
         btnPublicar = new javax.swing.JButton();
         btnEscribirNota = new javax.swing.JButton();
+        ftxtCosecha = new javax.swing.JFormattedTextField();
+        ftxtFundacion = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -210,7 +237,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                         .addComponent(btnComentar)
                         .addGap(18, 18, 18)
                         .addComponent(txtComentar, javax.swing.GroupLayout.PREFERRED_SIZE, 705, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(217, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,7 +252,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                     .addComponent(txtComentar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addComponent(btnSalir)
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Inicio", jPanel2);
@@ -257,7 +284,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                     .addComponent(btnModificar)
                     .addComponent(jLabel3)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 874, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(200, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,7 +295,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnModificar)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Mis vinos", jPanel3);
@@ -288,7 +315,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 848, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(216, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -297,7 +324,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(95, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Mis notas", jPanel4);
@@ -355,7 +382,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -404,7 +431,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator1)
                             .addComponent(jScrollPane4))))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Buscar", jPanel5);
@@ -448,10 +475,29 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jRadioButton5.setText("¡¡¡EXTRAORDINARIO!!!");
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnPublicar.setText("Publicar");
+        btnPublicar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPublicarActionPerformed(evt);
+            }
+        });
 
         btnEscribirNota.setText("Escribir nota de cata");
+        btnEscribirNota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEscribirNotaActionPerformed(evt);
+            }
+        });
+
+        ftxtCosecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("y"))));
+
+        ftxtFundacion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("y"))));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -459,24 +505,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(88, 88, 88)
-                        .addComponent(jLabel12)
-                        .addGap(56, 56, 56)
-                        .addComponent(txtNombreNV, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(122, 122, 122)
-                        .addComponent(jLabel18)
-                        .addGap(45, 45, 45)
-                        .addComponent(cmbColor, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(90, 90, 90)
-                        .addComponent(jLabel13)
-                        .addGap(67, 67, 67)
-                        .addComponent(txtCepasNV, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(122, 122, 122)
-                        .addComponent(jLabel19)
-                        .addGap(16, 16, 16)
-                        .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(90, 90, 90)
                         .addComponent(jLabel14)
@@ -488,24 +516,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
                         .addComponent(cmbPais, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(90, 90, 90)
-                        .addComponent(jLabel15)
-                        .addGap(55, 55, 55)
-                        .addComponent(txtEnologoNV, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(122, 122, 122)
-                        .addComponent(jLabel21)
-                        .addGap(25, 25, 25)
-                        .addComponent(txtCosechaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(90, 90, 90)
-                        .addComponent(jLabel16)
-                        .addGap(58, 58, 58)
-                        .addComponent(txtBodegaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52)
-                        .addComponent(jLabel22)
-                        .addGap(11, 11, 11)
-                        .addComponent(txtFundacionNV, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(90, 90, 90)
                         .addComponent(jLabel17)
                         .addGap(55, 55, 55)
                         .addComponent(txtTerrunoNV, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -513,7 +523,15 @@ public class MenuPrincipal extends javax.swing.JFrame {
                         .addGap(59, 59, 59)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 839, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11)))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addGap(29, 29, 29)
+                                    .addComponent(jLabel12)
+                                    .addGap(56, 56, 56)
+                                    .addComponent(txtNombreNV, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel18))
+                                .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(130, 130, 130)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -535,35 +553,73 @@ public class MenuPrincipal extends javax.swing.JFrame {
                         .addGap(213, 213, 213)
                         .addComponent(btnPublicar)
                         .addGap(150, 150, 150)
-                        .addComponent(btnEscribirNota)))
-                .addGap(64, 64, 64))
+                        .addComponent(btnEscribirNota))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel16)
+                                .addGap(58, 58, 58)
+                                .addComponent(txtBodegaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(52, 52, 52)
+                                .addComponent(jLabel22))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addGap(55, 55, 55)
+                                .addComponent(txtEnologoNV, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(122, 122, 122)
+                                .addComponent(jLabel21)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ftxtFundacion, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(ftxtCosecha, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(jLabel13)
+                        .addGap(67, 67, 67)
+                        .addComponent(txtCepasNV, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(122, 122, 122)
+                        .addComponent(jLabel19)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbColor, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(207, 207, 207))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jLabel11)
-                .addGap(17, 17, 17)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(jLabel12))
-                    .addComponent(txtNombreNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel11)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(5, 5, 5)
+                                        .addComponent(jLabel12))
+                                    .addComponent(txtNombreNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel18))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel18))
-                    .addComponent(cmbColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cmbColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)))
                 .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
                         .addComponent(jLabel13))
                     .addComponent(txtCepasNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel19))
-                    .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel19)))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtColorNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -575,28 +631,30 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtEnologoNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCosechaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
+                        .addGap(4, 4, 4)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel15)
-                            .addComponent(jLabel21))))
-                .addGap(10, 10, 10)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel21)
+                                .addComponent(ftxtCosecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(6, 6, 6)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtBodegaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFundacionNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
+                        .addGap(8, 8, 8)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel16)
-                            .addComponent(jLabel22))))
-                .addGap(10, 10, 10)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel22)
+                                .addComponent(ftxtFundacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jLabel17))
                     .addComponent(txtTerrunoNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
+                .addGap(22, 22, 22)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel23)
@@ -608,7 +666,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioButton3)
                     .addComponent(jRadioButton4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(jRadioButton5)
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -641,22 +699,65 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void btnComentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComentarActionPerformed
         // Evento comentar
-        String comentario = txtComentar.getText();
-        txaCompartir.append(comentario+"\n");
-        if (txtComentar.getText().isBlank()) JOptionPane.showMessageDialog(this, "Usted está enviando un mensaje vacío");
-        limpiarComentario();
+        try (Socket so = new Socket(InetAddress.getLocalHost(), 8900);
+                OutputStream out = so.getOutputStream();) {
+            DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+            LocalDateTime lDT = LocalDateTime.now();
+            String fechayhora=lDT.format(formatter);
+            out.write(txtComentar.getText().getBytes());
+            txaCompartir.append("\n"+username+" "+JInicio.usernameInicio+ " escribió: " + "\n"
+                    + txtComentar.getText() + "\n" +fechayhora+"\n");
+            if (txtComentar.getText().isBlank()) {
+                JOptionPane.showMessageDialog(this, "Usted está enviando un mensaje vacío");}
+            limpiarComentario();
+        } catch (Exception e) {e.printStackTrace();}
+       
     }//GEN-LAST:event_btnComentarActionPerformed
 
     private void txtComentarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtComentarKeyReleased
         // Evento comentar con enter
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER) {
-            String comentarioEnter = txtComentar.getText();
-            txaCompartir.append(comentarioEnter+"\n");
-            if (txtComentar.getText().isBlank()) JOptionPane.showMessageDialog(this, "Usted está enviando un mensaje vacío");
-            limpiarComentario();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            try (Socket so = new Socket(InetAddress.getLocalHost(), 8900);
+                    OutputStream out = so.getOutputStream();) {
+                DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+                LocalDateTime lDT = LocalDateTime.now();
+                String fechayhora=lDT.format(formatter);
+                out.write(txtComentar.getText().getBytes());
+                txaCompartir.append("\n"+username+" "+JInicio.usernameInicio+" escribió: " + "\n"
+                        + txtComentar.getText() + "\n" + fechayhora+"\n");
+                if (txtComentar.getText().isBlank()) {
+                    JOptionPane.showMessageDialog(this, "Usted está enviando un mensaje vacío");
+                }
+                limpiarComentario();
+            } catch (Exception e) {e.printStackTrace();}
         }
-        
     }//GEN-LAST:event_txtComentarKeyReleased
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // Evento guardar nuevo vino
+        guardarVino();
+        guardarBodega();
+        //cargar vino a la tabla
+        int ultimo_indicevino=vr.getAll().lastIndexOf(v);
+        List<String>lista=new ArrayList<>();
+        lista.add(
+        vr.getAll().get(ultimo_indicevino).toString());
+        Table table = new Table();
+        table.cargar(tblVinos, lista);
+        JOptionPane.showMessageDialog(this, "Los datos se han guardado satisfactoriamente. Ahora puede verlos en la sección Mis Vinos");
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnPublicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicarActionPerformed
+        // Evento publicar vino
+        txaCompartir.append("\n"+username+" "+JInicio.usernameInicio+" compartió un nuevo vino: "+"\n"+v.toString()+"\n");
+        JOptionPane.showMessageDialog(this, "¡El vino registrado se ha compartido exitosamente!");
+    }//GEN-LAST:event_btnPublicarActionPerformed
+
+    private void btnEscribirNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEscribirNotaActionPerformed
+        // Evento nota de cata
+        NotaDeCata nDC = new NotaDeCata(this, true);
+        nDC.setVisible(true);
+    }//GEN-LAST:event_btnEscribirNotaActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -702,6 +803,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbCategoria;
     private javax.swing.JComboBox<String> cmbColor;
     private javax.swing.JComboBox<String> cmbPais;
+    private javax.swing.JFormattedTextField ftxtCosecha;
+    private javax.swing.JFormattedTextField ftxtFundacion;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -755,10 +858,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextField txtColorNV;
     private javax.swing.JTextField txtComentar;
     private javax.swing.JTextField txtCosecha;
-    private javax.swing.JTextField txtCosechaNV;
     private javax.swing.JTextField txtEnologo;
     private javax.swing.JTextField txtEnologoNV;
-    private javax.swing.JTextField txtFundacionNV;
     private javax.swing.JTextField txtNombreNV;
     private javax.swing.JTextField txtTerruno;
     private javax.swing.JTextField txtTerrunoNV;

@@ -1,6 +1,7 @@
 package trabajopracticopoo2.vinoapp.tests;
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.Arrays;
 import trabajopracticopoo2.vinoapp.connectors.Connector;
 public class TestConnection {
     public static void main(String[] args) {

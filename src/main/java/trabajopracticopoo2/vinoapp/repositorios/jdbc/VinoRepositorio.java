@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import trabajopracticopoo2.vinoapp.entidades.Bodega;
 import trabajopracticopoo2.vinoapp.entidades.Vino;
 import trabajopracticopoo2.vinoapp.enumerados.Categoria;
 import trabajopracticopoo2.vinoapp.enumerados.Color;
