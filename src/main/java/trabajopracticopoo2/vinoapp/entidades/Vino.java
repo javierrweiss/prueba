@@ -44,6 +44,10 @@ private String terruno;
     public String toString() {
         return "Vino{" + "vino_id=" + vino_id + ", nombre=" + nombre + ", cepas=" + cepas + ", color=" + color + ", cosecha=" + cosecha + ", categoria=" + categoria + ", enologo=" + enologo + ", bodega_id=" + bodega_id + ", terruno=" + terruno + '}';
     }
+    
+    public String toStringView(){
+        return "Nombre: "+nombre+" Cepas: "+cepas+" Color: "+color+" Cosecha: "+cosecha+" Categoría: "+categoria+" Enólogo: "+enologo+" Terruño/Viñedo: "+terruno;
+    }
 
     public int getVino_id() {
         return vino_id;

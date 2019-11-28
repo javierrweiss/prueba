@@ -1,6 +1,9 @@
 package trabajopracticopoo2.vinoapp.connectors;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Connector {
 
@@ -20,13 +23,15 @@ public class Connector {
     }
 
     public synchronized static Connection getConnection() {
-        if (conn == null) {
-            try {
-                Class.forName(driver);
-                conn = DriverManager.getConnection(url, user, pass);
-            } catch (Exception e) {
-                e.printStackTrace();
+        try { //modificado 
+            if (conn == null || conn.isClosed()) { //conn.isClosed() modificado en caso que hubiesen errores que se presentaron en trabajos de otros compañeros
+                try {
+                    Class.forName(driver);
+                    conn = DriverManager.getConnection(url, user, pass);
+                } catch (Exception e) {e.printStackTrace(); }
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(Connector.class.getName()).log(Level.SEVERE, null, ex); //código creado por el IDE tras el "Surround with try-catch"
         }
         return conn;
     }
