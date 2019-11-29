@@ -13,6 +13,7 @@ private Categoria categoria;
 private String enologo;
 private int bodega_id;
 private String terruno;
+private String nota_de_cata;
 
     public Vino() {
     }
@@ -40,13 +41,26 @@ private String terruno;
         this.terruno = terruno;
     }
 
+    public Vino(String nombre, String cepas, Color color, int cosecha, Categoria categoria, String enologo, int bodega_id, String terruno, String nota_de_cata) {
+        this.nombre = nombre;
+        this.cepas = cepas;
+        this.color = color;
+        this.cosecha = cosecha;
+        this.categoria = categoria;
+        this.enologo = enologo;
+        this.bodega_id = bodega_id;
+        this.terruno = terruno;
+        this.nota_de_cata = nota_de_cata;
+    }
+
+    
     @Override
     public String toString() {
         return "Vino{" + "vino_id=" + vino_id + ", nombre=" + nombre + ", cepas=" + cepas + ", color=" + color + ", cosecha=" + cosecha + ", categoria=" + categoria + ", enologo=" + enologo + ", bodega_id=" + bodega_id + ", terruno=" + terruno + '}';
     }
     
     public String toStringView(){
-        return "Nombre: "+nombre+" Cepas: "+cepas+" Color: "+color+" Cosecha: "+cosecha+" Categoría: "+categoria+" Enólogo: "+enologo+" Terruño/Viñedo: "+terruno;
+        return "Nombre: "+nombre+"\n"+"Cepas: "+cepas+"\n"+"Color: "+color+"\n"+"Cosecha: "+cosecha+"\n"+"Categoría: "+categoria+"\n"+"Enólogo: "+enologo+"\n"+"Terruño/Viñedo: "+terruno+"\n";
     }
 
     public int getVino_id() {
@@ -119,6 +133,14 @@ private String terruno;
 
     public void setTerruno(String terruno) {
         this.terruno = terruno;
+    }
+    
+    public String getNota_de_cata(){
+         return nota_de_cata;
+    }
+    
+    public void setNota_de_cata(String nota_de_cata){
+        this.nota_de_cata=nota_de_cata;
     }
 
     @Override

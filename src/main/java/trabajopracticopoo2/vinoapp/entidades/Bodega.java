@@ -31,6 +31,9 @@ private int    fundacion;
     public String toString() {
         return "Bodega{" + "bodega_id=" + bodega_id + ", nombre_bodega=" + nombre_bodega + ", pais=" + pais + ", ubicacion=" + ubicacion + ", fundacion=" + fundacion + '}';
     }
+    public String toStringBodegaView() {
+        return "Bodega: "+nombre_bodega+"\n"+ "País: "+pais+"\n"+ "Dirección ppal de la bodega: "+ubicacion+"\n"+"Año de fundación: "+fundacion+"\n";
+    }
     
     public int getBodega_id() {
         return bodega_id;

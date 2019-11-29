@@ -121,16 +121,7 @@ public class TestRepositorio {
             pr.update(premio);
             pr.getAll().forEach(System.out::println);
             System.out.println("*****************************");
-        //int ultimo_indicebodega=br.getAll().indexOf(bodega);
-//        int ultimo_indicevino=vr.getAll().indexOf(vino);
-//        List<String>lista=new ArrayList<>();
-//        lista.add(
-//        vr.getAll().get(ultimo_indicevino).toString());
-//        lista.add(
-//        br.getAll().get(ultimo_indicebodega).toString());
-//        lista.forEach(System.out::println);
-//System.out.println(ultimo_indicebodega);
-//System.out.println(ultimo_indicevino);
+        
         } catch (Exception e) {e.printStackTrace();}
     }   
     

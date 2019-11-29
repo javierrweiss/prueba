@@ -138,3 +138,6 @@ join bodegas b on v.bodega_id=v.bodega_id
 join rankings r on r.vino_id=v.vino_id 
 join usuarios u on r.usuario_id=u.usuario_id 
 where u.cuenta_usuario=?;
+
+select usuario_id from usuarios where cuenta_usuario="vinoadicto";
+select cuenta_usuario from usuarios;

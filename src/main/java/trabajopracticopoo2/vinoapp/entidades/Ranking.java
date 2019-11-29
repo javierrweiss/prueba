@@ -30,6 +30,10 @@ private transient int tienda_id;
     public String toString() {
         return "Ranking{" + "ranking_id=" + ranking_id + ", ranking=" + ranking + ", usuario_id=" + usuario_id + ", vino_id=" + vino_id + ", tienda_id=" + tienda_id + '}';
     }
+    
+    public String toStringRankingView(){
+     return "Ranking: "+ranking;
+    }
 
     public int getRanking_id() {
         return ranking_id;

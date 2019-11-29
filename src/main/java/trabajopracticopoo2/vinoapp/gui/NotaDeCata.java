@@ -1,8 +1,27 @@
 package trabajopracticopoo2.vinoapp.gui;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import trabajopracticopoo2.vinoapp.connectors.Connector;
+import trabajopracticopoo2.vinoapp.entidades.Vino;
+import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_VinoRepositorio;
+import trabajopracticopoo2.vinoapp.repositorios.jdbc.VinoRepositorio;
+
 public class NotaDeCata extends javax.swing.JDialog {
+    I_VinoRepositorio vr;
     public NotaDeCata(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        vr=new VinoRepositorio(Connector.getConnection());
+    }
+    
+    public void limpiar(){
+    txaApariencia.setText("");
+    txaAroma.setText("");
+    txaEstructura.setText("");
+    txaEvaluacionGeneral.setText("");
+    txaSensacion.setText("");
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -10,7 +29,6 @@ public class NotaDeCata extends javax.swing.JDialog {
 
         btnGuardar = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txaAroma = new javax.swing.JTextArea();
@@ -32,10 +50,18 @@ public class NotaDeCata extends javax.swing.JDialog {
         setTitle("Nota de Cata");
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnVolver.setText("Volver");
-
-        btnEliminar.setText("Eliminar");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Describa los aromas que pudo percibir en el vino");
 
@@ -89,11 +115,9 @@ public class NotaDeCata extends javax.swing.JDialog {
                                 .addComponent(jScrollPane5)
                                 .addComponent(jScrollPane6)))
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(142, 142, 142)
+                            .addGap(384, 384, 384)
                             .addComponent(btnGuardar)
-                            .addGap(158, 158, 158)
-                            .addComponent(btnEliminar)
-                            .addGap(194, 194, 194)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnVolver))
                         .addGroup(layout.createSequentialGroup()
                             .addContainerGap()
@@ -129,15 +153,44 @@ public class NotaDeCata extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnVolver))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnGuardar)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnVolver))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        // Evento volver
+        MenuPrincipal mP=new MenuPrincipal();
+        mP.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // Evento guardar
+        Vino v1=new Vino();
+        v1.setNota_de_cata(
+                txaAroma.getText().concat(
+                txaEstructura.getText()).concat(
+                txaApariencia.getText()).concat(
+                txaEvaluacionGeneral.getText()).concat(
+                txaSensacion.getText())
+                );
+        List<Vino>ultimovino=new ArrayList<>();
+        int contador=vr.getAll().size();
+        ultimovino.add(vr.getAll().remove(contador-1));
+        ultimovino.set(0,v1); 
+        vr.update(v1);
+        
+        JOptionPane.showMessageDialog(this, "Su nota de cata se ha guardado con éxito");
+        limpiar();
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -179,7 +232,6 @@ public class NotaDeCata extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnVolver;
     private javax.swing.JLabel jLabel1;

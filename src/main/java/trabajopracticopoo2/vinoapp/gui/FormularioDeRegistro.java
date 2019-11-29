@@ -14,7 +14,7 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
     protected static char[] clave=psw.getPassword();
     Validator val=new Validator();
     Usuario u = new Usuario();
-    protected static String username=""; 
+    public static String username=""; 
     public FormularioDeRegistro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
