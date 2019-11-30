@@ -1,4 +1,5 @@
 package trabajopracticopoo2.vinoapp.repositorios.interfaces;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import trabajopracticopoo2.vinoapp.entidades.Bodega;
@@ -14,6 +15,14 @@ public interface I_BodegaRepositorio {
            .filter(b->b.getBodega_id()==bodega_id)
            .findFirst()
            .orElse(new Bodega());
+    }
+    
+    default Bodega getLastBodegaId (){
+        return getById(getAll()
+                       .stream()
+                       .max(Comparator.comparingInt(Bodega::getBodega_id))
+                       .get()
+                       .getBodega_id());
     }
     
     default List<Bodega> getLikeNombre(String nombre_bodega){

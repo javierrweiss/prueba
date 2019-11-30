@@ -1,4 +1,5 @@
 package trabajopracticopoo2.vinoapp.repositorios.interfaces;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import trabajopracticopoo2.vinoapp.entidades.Ranking;
@@ -16,6 +17,15 @@ public interface I_RankingRepositorio {
                .findFirst()
                .orElse(new Ranking());
     }
+    
+    default Ranking getLastRankingid(){
+    return getById(getAll()
+            .stream()
+            .max(Comparator.comparingInt(Ranking::getRanking_id))
+            .get()
+            .getRanking_id());
+    }
+    
     default List<Ranking> getByRanking(RankingEnum ranking){
         return getAll()
                .stream()

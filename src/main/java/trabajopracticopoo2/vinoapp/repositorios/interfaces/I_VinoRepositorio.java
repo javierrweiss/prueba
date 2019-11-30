@@ -1,5 +1,6 @@
 package trabajopracticopoo2.vinoapp.repositorios.interfaces;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import trabajopracticopoo2.vinoapp.entidades.Bodega;
@@ -20,6 +21,15 @@ public interface I_VinoRepositorio {
             .findFirst()
             .orElse(new Vino());
     }
+    
+    default Vino getUltimo(){
+        return getById(getAll()
+                .stream()
+        .max(Comparator.comparingInt(Vino::getVino_id))
+        .get()
+        .getVino_id()
+        );
+    } 
     
     default List<Vino> getByNombre(String nombre){
     if(nombre==null) return new ArrayList<>();

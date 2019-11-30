@@ -30,11 +30,11 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
         this.dispose();
     }
     
-    public boolean validar(){
-        if(!new Validator(txtCuentaUsuario).length(2, 45) & !new Validator(txtNombre).length(2, 35) 
-           & !new Validator(txtApellido).length(2, 35) & !new Validator(txtRegion).length(4, 35)
-        & !new Validator(txtCiudad).length(4, 45) & !new Validator(txtCodPostal).length(4, 12)) return false;
-        return true;
+    public boolean validar() {
+        if(!new Validator(txtCuentaUsuario).length(2, 45) | !new Validator(txtNombre).length(2, 35) 
+           | !new Validator(txtApellido).length(2, 35) | !new Validator(txtRegion).length(4, 35)
+        | !new Validator(txtCiudad).length(4, 45) | !new Validator(txtCodPostal).length(4, 12)) return false;
+    return true;
     }
     
     public void saveInRepository(){
@@ -233,8 +233,9 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-        //Evento registrar
-       if(!validar()) return; 
+        
+       //Evento registrar
+       if(!validar()) return;
        saveInRepository();
        cargar();
        username=txtCuentaUsuario.getText();

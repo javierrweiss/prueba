@@ -1,7 +1,5 @@
 package trabajopracticopoo2.vinoapp.gui;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JOptionPane;
 import trabajopracticopoo2.vinoapp.connectors.Connector;
 import trabajopracticopoo2.vinoapp.entidades.Vino;
@@ -169,12 +167,13 @@ public class NotaDeCata extends javax.swing.JDialog {
         // Evento volver
         MenuPrincipal mP=new MenuPrincipal();
         mP.setVisible(true);
+        mP.cargarBoxes();
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // Evento guardar
-        Vino v1=new Vino();
+        Vino v1=vr.getUltimo();
         v1.setNota_de_cata(
                 txaAroma.getText().concat(
                 txaEstructura.getText()).concat(
@@ -182,11 +181,8 @@ public class NotaDeCata extends javax.swing.JDialog {
                 txaEvaluacionGeneral.getText()).concat(
                 txaSensacion.getText())
                 );
-        List<Vino>ultimovino=new ArrayList<>();
-        int contador=vr.getAll().size();
-        ultimovino.add(vr.getAll().remove(contador-1));
-        ultimovino.set(0,v1); 
         vr.update(v1);
+        
         
         JOptionPane.showMessageDialog(this, "Su nota de cata se ha guardado con éxito");
         limpiar();

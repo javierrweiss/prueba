@@ -92,7 +92,7 @@
                       </Group>
                       <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                       <Component id="btnSalir" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="339" max="32767" attributes="0"/>
+                      <EmptySpace pref="334" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -229,7 +229,7 @@
                                               </Group>
                                               <Group type="102" alignment="1" attributes="0">
                                                   <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace pref="55" max="32767" attributes="0"/>
+                                                  <EmptySpace pref="59" max="32767" attributes="0"/>
                                                   <Component id="cmbPais" min="-2" pref="200" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
@@ -343,7 +343,7 @@
                       <Component id="jLabel23" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="cmbRanking" min="-2" pref="36" max="-2" attributes="0"/>
-                      <EmptySpace pref="340" max="32767" attributes="0"/>
+                      <EmptySpace pref="360" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnEscribirNota" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnPublicar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -750,7 +750,7 @@
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jScrollPane2" min="-2" pref="487" max="-2" attributes="0"/>
-                      <EmptySpace pref="328" max="32767" attributes="0"/>
+                      <EmptySpace pref="318" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -813,7 +813,7 @@
                       <Component id="jScrollPane5" min="-2" pref="211" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane6" min="-2" pref="251" max="-2" attributes="0"/>
-                      <EmptySpace pref="344" max="32767" attributes="0"/>
+                      <EmptySpace pref="334" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -882,50 +882,50 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
-                              <Component id="txtVino" min="-2" pref="265" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
+                          <Component id="jScrollPane7" min="-2" pref="1076" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                                      <Component id="txtVino" min="-2" pref="265" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="txtCosecha" pref="265" max="32767" attributes="0"/>
+                                          <Component id="txtBodega" pref="265" max="32767" attributes="0"/>
+                                          <Component id="txtCepas" alignment="0" pref="265" max="32767" attributes="0"/>
+                                          <Component id="txtEnologo" alignment="0" pref="265" max="32767" attributes="0"/>
+                                          <Component id="txtTerruno" pref="265" max="32767" attributes="0"/>
+                                          <Component id="cmbCategoriaBusqueda" alignment="0" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
-                              <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtCosecha" pref="265" max="32767" attributes="0"/>
-                                  <Component id="txtBodega" pref="265" max="32767" attributes="0"/>
-                                  <Component id="txtCepas" alignment="0" pref="265" max="32767" attributes="0"/>
-                                  <Component id="txtCategoria" alignment="0" pref="265" max="32767" attributes="0"/>
-                                  <Component id="txtEnologo" alignment="0" pref="265" max="32767" attributes="0"/>
-                                  <Component id="txtTerruno" pref="265" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="BuscarEnologo" min="-2" pref="265" max="-2" attributes="0"/>
+                                  <Component id="BuscarCepas" min="-2" pref="265" max="-2" attributes="0"/>
+                                  <Component id="BuscarBodega" min="-2" pref="265" max="-2" attributes="0"/>
+                                  <Component id="BuscarCosecha" min="-2" pref="265" max="-2" attributes="0"/>
+                                  <Component id="BuscarCategoria" min="-2" pref="265" max="-2" attributes="0"/>
+                                  <Component id="BuscarTerruno" min="-2" pref="265" max="-2" attributes="0"/>
+                                  <Component id="BuscarVino" min="-2" pref="265" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="BuscarEnologo" min="-2" pref="265" max="-2" attributes="0"/>
-                          <Component id="BuscarCepas" min="-2" pref="265" max="-2" attributes="0"/>
-                          <Component id="BuscarBodega" min="-2" pref="265" max="-2" attributes="0"/>
-                          <Component id="BuscarCosecha" min="-2" pref="265" max="-2" attributes="0"/>
-                          <Component id="BuscarCategoria" min="-2" pref="265" max="-2" attributes="0"/>
-                          <Component id="BuscarTerruno" min="-2" pref="265" max="-2" attributes="0"/>
-                          <Component id="BuscarVino" min="-2" pref="265" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                      <Component id="jScrollPane4" pref="1143" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace pref="81" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -973,14 +973,14 @@
                                           </Group>
                                       </Group>
                                       <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="txtCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="BuscarCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="BuscarCategoria" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cmbCategoriaBusqueda" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="txtEnologo" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="BuscarEnologo" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -996,9 +996,9 @@
                               <Component id="BuscarTerruno" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
-                      <Component id="jScrollPane4" min="-2" pref="138" max="-2" attributes="0"/>
-                      <EmptySpace pref="130" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jScrollPane7" min="-2" pref="294" max="-2" attributes="0"/>
+                      <EmptySpace pref="78" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1047,8 +1047,6 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtCepas">
             </Component>
-            <Component class="javax.swing.JTextField" name="txtCategoria">
-            </Component>
             <Component class="javax.swing.JTextField" name="txtEnologo">
             </Component>
             <Component class="javax.swing.JTextField" name="txtTerruno">
@@ -1061,21 +1059,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BuscarBodegaActionPerformed"/>
               </Events>
             </Component>
-            <Container class="javax.swing.JScrollPane" name="jScrollPane4">
-              <AuxValues>
-                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-              </AuxValues>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-              <SubComponents>
-                <Component class="javax.swing.JTextArea" name="txaResultadoBusqueda">
-                  <Properties>
-                    <Property name="columns" type="int" value="20"/>
-                    <Property name="rows" type="int" value="5"/>
-                  </Properties>
-                </Component>
-              </SubComponents>
-            </Container>
             <Component class="javax.swing.JButton" name="BuscarCosecha">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Buscar"/>
@@ -1123,6 +1106,37 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BuscarVinoActionPerformed"/>
               </Events>
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane7">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="tblBusqueda">
+                  <Properties>
+                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                      <Table columnCount="4" rowCount="4">
+                        <Column editable="true" title="Title 1" type="java.lang.Object"/>
+                        <Column editable="true" title="Title 2" type="java.lang.Object"/>
+                        <Column editable="true" title="Title 3" type="java.lang.Object"/>
+                        <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                      </Table>
+                    </Property>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JComboBox" name="cmbCategoriaBusqueda">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="0"/>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

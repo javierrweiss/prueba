@@ -1,5 +1,6 @@
 package trabajopracticopoo2.vinoapp.repositorios.interfaces;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import trabajopracticopoo2.vinoapp.entidades.Usuario;
@@ -20,6 +21,14 @@ public interface I_UsuarioRepositorio {
     return getAll()
            .stream()
            .anyMatch(u->u.getCuenta_usuario().equals(cuenta_usuario));
+    }
+    
+    default Usuario getLastId(){
+        return getById(getAll()
+                    .stream()
+                    .max(Comparator.comparingInt(Usuario::getUsuario_id))
+                    .get()
+                    .getUsuario_id());
     }
     
     default List<Usuario> getByCuenta(String cuenta_usuario){
