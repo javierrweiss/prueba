@@ -1,17 +1,24 @@
 package trabajopracticopoo2.vinoapp.gui;
-
+import ar.org.centro8.curso.java.utils.FileText;
+import ar.org.centro8.curso.java.utils.I_FileText;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
 import javax.swing.JOptionPane;
 import trabajopracticopoo2.vinoapp.connectors.Connector;
-import trabajopracticopoo2.vinoapp.entidades.Vino;
+import trabajopracticopoo2.vinoapp.entidades.Usuario;
+import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_UsuarioRepositorio;
 import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_VinoRepositorio;
+import trabajopracticopoo2.vinoapp.repositorios.jdbc.UsuarioRepositorio;
 import trabajopracticopoo2.vinoapp.repositorios.jdbc.VinoRepositorio;
-
 public class NotaDeCata extends javax.swing.JDialog {
     I_VinoRepositorio vr;
+    I_UsuarioRepositorio ur;
     public NotaDeCata(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         vr=new VinoRepositorio(Connector.getConnection());
+        ur=new UsuarioRepositorio(Connector.getConnection());
     }
     
     public void limpiar(){
@@ -168,24 +175,34 @@ public class NotaDeCata extends javax.swing.JDialog {
         MenuPrincipal mP=new MenuPrincipal();
         mP.setVisible(true);
         mP.cargarBoxes();
+        mP.cargar_vinos_del_usuario();
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // Evento guardar
-        Vino v1=vr.getUltimo();
-        v1.setNota_de_cata(
-                txaAroma.getText().concat(
-                txaEstructura.getText()).concat(
-                txaApariencia.getText()).concat(
-                txaEvaluacionGeneral.getText()).concat(
-                txaSensacion.getText())
-                );
-        vr.update(v1);
+        Usuario u=ur.getConnectedUser(JInicio.txtUsuario.getText());
+        u.setNota_de_cata("Aroma: \n"+
+                txaAroma.getText().concat("\n Estructura: \n"+
+                txaEstructura.getText()+"\n").concat("Apariencia: \n"+
+                txaApariencia.getText()+"\n").concat("Sensación: \n"+
+                txaSensacion.getText()+"\n").concat("Evaluación general: \n"+
+                txaEvaluacionGeneral.getText()+"\n")
+        );
+        ur.update(u);
         
-        
+        //Hacer un archivo con la nota de cata 
+        try (Socket so=new Socket(InetAddress.getLocalHost(), 8900);
+                OutputStream out = so.getOutputStream();){
+        String file=vr.getUltimo().getNombre()+".txt";
+        I_FileText ft=new FileText(file);
+        ft.setText("Aroma \n"+txaAroma.getText()+"\n"+"\nEstructura \n"+txaEstructura.getText()+"\n"+"\nSensación \n"+txaSensacion.getText()
+                +"\n"+"\nApariencia \n"+txaApariencia.getText()+"\n"+"\nEvaluación general \n"+ txaEvaluacionGeneral.getText());
+        ft.getLines().forEach(System.out::println);
         JOptionPane.showMessageDialog(this, "Su nota de cata se ha guardado con éxito");
-        limpiar();
+        limpiar();    
+        } catch (Exception e) {e.printStackTrace();}
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     public static void main(String args[]) {

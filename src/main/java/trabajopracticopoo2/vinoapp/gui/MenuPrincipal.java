@@ -8,51 +8,95 @@ import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import trabajopracticopoo2.vinoapp.connectors.Connector;
 import trabajopracticopoo2.vinoapp.entidades.Vino;
 import trabajopracticopoo2.vinoapp.entidades.Bodega;
 import trabajopracticopoo2.vinoapp.entidades.Ranking;
-import trabajopracticopoo2.vinoapp.entidades.Usuario;
 import trabajopracticopoo2.vinoapp.enumerados.Categoria;
 import trabajopracticopoo2.vinoapp.enumerados.Color;
 import trabajopracticopoo2.vinoapp.enumerados.RankingEnum;
-import static trabajopracticopoo2.vinoapp.gui.FormularioDeRegistro.username;
 import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_BodegaRepositorio;
-import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_PremiosRepositorio;
 import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_RankingRepositorio;
-import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_TiendaRepositorio;
 import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_UsuarioRepositorio;
 import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_VinoRepositorio;
 import trabajopracticopoo2.vinoapp.repositorios.jdbc.BodegaRepositorio;
-import trabajopracticopoo2.vinoapp.repositorios.jdbc.PremioRepositorio;
 import trabajopracticopoo2.vinoapp.repositorios.jdbc.RankingRepositorio;
-import trabajopracticopoo2.vinoapp.repositorios.jdbc.TiendaRepositorio;
 import trabajopracticopoo2.vinoapp.repositorios.jdbc.UsuarioRepositorio;
 import trabajopracticopoo2.vinoapp.repositorios.jdbc.VinoRepositorio;
 
 public class MenuPrincipal extends javax.swing.JFrame {
     I_BodegaRepositorio br;
-    I_PremiosRepositorio pr;
     I_UsuarioRepositorio ur;
-    I_TiendaRepositorio tr;
     I_RankingRepositorio rr;
     I_VinoRepositorio vr;
     Ranking ranking;
     Table table = new Table();
+    private static List<Vino> lista_de_vinos_por_usuario=new ArrayList<>();
+    private static List<Bodega> lista_de_bodegas_por_usuario=new ArrayList<>();
     public MenuPrincipal() {
         initComponents();
         new Thread(new ServidorChatR(txaCompartir)).start();
         br=new BodegaRepositorio(Connector.getConnection());
-        pr=new PremioRepositorio(Connector.getConnection());
         ur=new UsuarioRepositorio(Connector.getConnection());
-        tr=new TiendaRepositorio(Connector.getConnection());
         rr=new RankingRepositorio(Connector.getConnection());
         vr=new VinoRepositorio(Connector.getConnection());
         cargarBoxes();
+        cargar_notas_de_cata();
+        cargar_vinos_del_usuario();
         
+    }
+    
+    public void cargar_notas_de_cata(){
+        try {
+           String usuario_conectado=ur.getConnectedUser(JInicio.txtUsuario.getText()).getCuenta_usuario();
+           int usuario_conectadoInt=ur.getConnectedUser(JInicio.txtUsuario.getText()).getUsuario_id();
+           int last_vino_by_usuario=rr.getVinoByUser(usuario_conectadoInt)
+             .stream()
+             .max(Comparator.comparing(Ranking::getVino_id))
+             .get()
+             .getVino_id();
+     txaNotaDeCata.append(usuario_conectado+" publicó una nota de cata: \n"
+             +"Vino: \n"+vr.getById(last_vino_by_usuario).getNombre()+"\n"
+                +ur.getConnectedUser(usuario_conectado).getNota_de_cata()); 
+        } catch (Exception e) {
+        e.printStackTrace();
+        txaNotaDeCata.append("Usted no tiene ninguna nota de cata registrada");
+        }
+    }
+    
+    public void cargar_vinos_del_usuario(){
+        List<String> listavacia = new ArrayList<>();
+        try {
+            table.cargar(tblVinos, lista_de_vinos_por_usuario);
+            table.cargar(tblBodega, lista_de_bodegas_por_usuario);
+            //cargar vinos del repositorio
+            /*
+    La listaranking equivale a un select * from rankings where usuario_id=? => usuario conectado
+             */
+            List<Ranking> listaranking = new ArrayList<>();
+            listaranking = rr.getVinoByUser(ur.getConnectedUser(JInicio.txtUsuario.getText()).getUsuario_id());
+            List<Vino> listaresultadovino = new ArrayList<>();
+            for (Ranking r : listaranking) {
+                int vino_obtenido = r.getVino_id();
+                listaresultadovino.add(vr.getById(vino_obtenido));
+            }
+            table.cargar(tblVinos, listaresultadovino);
+            //cargar bodegas del repositorio
+            List<Bodega> listaresultadobodega = new ArrayList<>();
+            for (Vino v : listaresultadovino) {
+                int bodega_obtenida = v.getBodega_id();
+                listaresultadobodega.add(br.getById(bodega_obtenida));
+            }
+            table.cargar(tblBodega, listaresultadobodega);
+        } catch (Exception e) {
+            e.printStackTrace();
+        //Se carga una tabla vacía en caso que el usuario sea nuevo y así capturar una NoSuchElementException
+            table.cargar(tblVinos, listavacia);
+            table.cargar(tblBodega, listavacia);
+        }
     }
     
     public void cargarBoxes(){
@@ -142,9 +186,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         cmbRanking = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txaListaNotasDeCata = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txaNotaDeCata = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -212,7 +256,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(938, Short.MAX_VALUE)
+                .addContainerGap(785, Short.MAX_VALUE)
                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(116, 116, 116))
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -240,7 +284,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                     .addComponent(txtComentar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addComponent(btnSalir)
-                .addContainerGap(334, Short.MAX_VALUE))
+                .addContainerGap(178, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Inicio", jPanel2);
@@ -341,15 +385,15 @@ public class MenuPrincipal extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel17)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(55, 55, 55)
                                         .addComponent(txtTerrunoNV, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel16)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(58, 58, 58)
                                         .addComponent(txtBodegaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel15)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(55, 55, 55)
                                         .addComponent(txtEnologoNV, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel13)
@@ -364,17 +408,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
                                                 .addComponent(jLabel18))
                                             .addGap(18, 18, 18)
                                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(cmbCategoria, 0, 200, Short.MAX_VALUE)
-                                                .addComponent(cmbColor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                                .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(cmbColor, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                             .addComponent(jLabel20)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                                            .addGap(59, 59, 59)
                                             .addComponent(cmbPais, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel21)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jLabel14)
-                                        .addGap(82, 82, 82))))
+                                        .addGap(88, 88, 88))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(424, 424, 424)
                                 .addComponent(jLabel22)
@@ -382,9 +426,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtCosechaNV, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
                                     .addComponent(txtFundacion))
-                                .addGap(67, 67, 67)
+                                .addGap(36, 36, 36)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,7 +443,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtBodegaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel21)
-                            .addComponent(txtCosechaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtCosechaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addGap(17, 17, 17)
@@ -429,10 +474,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                                 .addGap(10, 10, 10)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel19)))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel14)
-                        .addGap(4, 4, 4)))
+                                    .addComponent(jLabel19))))))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
@@ -440,17 +482,15 @@ public class MenuPrincipal extends javax.swing.JFrame {
                             .addComponent(jLabel22)
                             .addComponent(txtTerrunoNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel17)
-                            .addComponent(txtFundacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(66, 66, 66))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
+                            .addComponent(txtFundacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cmbRanking, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 360, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEscribirNota)
                     .addComponent(btnPublicar)
@@ -460,11 +500,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Nuevo Vino", jPanel1);
 
-        txaListaNotasDeCata.setColumns(20);
-        txaListaNotasDeCata.setRows(5);
-        jScrollPane2.setViewportView(txaListaNotasDeCata);
-
         jLabel2.setText("Acá puedes ver tus notas de cata");
+
+        txaNotaDeCata.setColumns(20);
+        txaNotaDeCata.setRows(5);
+        jScrollPane2.setViewportView(txaNotaDeCata);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -474,17 +514,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 848, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(318, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 934, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(318, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 624, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Mis notas", jPanel4);
@@ -502,7 +542,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tblVinos.setToolTipText("Si desea modificar el registro, haga click sobre él y cambie lo que desee.");
+        tblVinos.setToolTipText("");
         jScrollPane5.setViewportView(tblVinos);
 
         tblBodega.setModel(new javax.swing.table.DefaultTableModel(
@@ -516,7 +556,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tblBodega.setToolTipText("Si desea modificar el registro, haga click sobre él y cambie lo que desee.");
+        tblBodega.setToolTipText("");
         jScrollPane6.setViewportView(tblBodega);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -526,7 +566,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 1114, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 961, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -542,7 +582,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(334, Short.MAX_VALUE))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Mis vinos", jPanel3);
@@ -630,39 +670,38 @@ public class MenuPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1076, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(49, 49, 49)
-                                .addComponent(txtVino, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtCosecha, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                                    .addComponent(txtBodega, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                                    .addComponent(txtCepas, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                                    .addComponent(txtEnologo, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                                    .addComponent(txtTerruno, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-                                    .addComponent(cmbCategoriaBusqueda, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(49, 49, 49)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtVino, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtCosecha, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                                .addComponent(txtBodega, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                                .addComponent(txtCepas, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                                .addComponent(txtEnologo, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                                .addComponent(txtTerruno, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                                .addComponent(cmbCategoriaBusqueda, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(50, 50, 50)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(BuscarEnologo, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BuscarCepas, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BuscarBodega, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BuscarCosecha, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BuscarCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BuscarTerruno, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BuscarVino, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(81, Short.MAX_VALUE))
+                            .addComponent(BuscarVino, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BuscarTerruno, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -713,9 +752,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtTerruno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(BuscarTerruno)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Buscar", jPanel5);
@@ -747,7 +786,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
             LocalDateTime lDT = LocalDateTime.now();
             String fechayhora=lDT.format(formatter);
             out.write(txtComentar.getText().getBytes());
-            txaCompartir.append("\n"+username+" "+JInicio.usernameInicio+" escribió: " + "\n"
+            txaCompartir.append("\n"+ur.getConnectedUser(JInicio.txtUsuario.getText()).getCuenta_usuario()
+                    +" escribió: " + "\n"
                     + txtComentar.getText() + "\n" +fechayhora+"\n");
             if (txtComentar.getText().isBlank()) {
                 JOptionPane.showMessageDialog(this, "Usted está enviando un mensaje vacío");}
@@ -765,7 +805,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 LocalDateTime lDT = LocalDateTime.now();
                 String fechayhora=lDT.format(formatter);
                 out.write(txtComentar.getText().getBytes());
-                txaCompartir.append("\n"+username+" "+JInicio.usernameInicio+" escribió: " + "\n"
+                txaCompartir.append("\n"+ur.getConnectedUser(JInicio.txtUsuario.getText()).getCuenta_usuario()
+                        +" escribió: " + "\n"
                         + txtComentar.getText() + "\n" + fechayhora+"\n");
                 if (txtComentar.getText().isBlank()) {
                     JOptionPane.showMessageDialog(this, "Usted está enviando un mensaje vacío");
@@ -778,6 +819,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // Evento guardar 
                 //guardar bodega
+        if(txtFundacion.getText().equals("")) txtFundacion.setText("0000"); //Para evitar que la base de datos mande una NumberFormatException
+        if(txtFundacion.getText().matches("//*{5}")) JOptionPane.showMessageDialog(this, "Esta no es una fecha correcta");
+        if(txtBodegaNV.getText().isBlank()) JOptionPane.showMessageDialog(this, "Debe completar este campo");
         var b= new Bodega(txtBodegaNV.getText(), 
                          cmbPais.getItemAt(cmbPais.getSelectedIndex()), 
                          txaUbicacion.getText(), 
@@ -788,6 +832,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 //guardar vino
         int bodega_id=b.getBodega_id();
         
+        if(txtCosechaNV.getText().matches("//*{5}")) JOptionPane.showMessageDialog(this, "Esta no es una fecha correcta");
+        if(txtNombreNV.getText().isBlank()) JOptionPane.showMessageDialog(this, "Debe completar este campo");
         Vino v = new Vino(txtNombreNV.getText(), 
                           txtCepasNV.getText(), 
                           Color.valueOf((String) cmbColor.getSelectedItem()), 
@@ -798,16 +844,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
                           txtTerrunoNV.getText()
                     );
         vr.save(v);
-        
+                        
                         //Recuperar usuario_id del usuario conectado
-         FormularioDeRegistro.username=JInicio.usernameInicio; //En caso que el usuario ingresara por login
-         List<Usuario>lista_usuario=new ArrayList<>();
-         lista_usuario=ur.getAll()
-                 .stream()
-                 .filter(u->u.getCuenta_usuario()
-                  .equalsIgnoreCase(FormularioDeRegistro.username))
-                 .collect(Collectors.toList());
-         int usuario_id=lista_usuario.get(0).getUsuario_id(); 
+        int usuario_id=ur.getConnectedUser(JInicio.txtUsuario.getText()).getUsuario_id(); 
          
                         //Recuperar vino_id del vino recién guardado
         int vino_id=v.getVino_id();
@@ -826,13 +865,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
             //rr.update(r);        
         
                 //crear lista con datos ingresados y cargar vino a la tabla
-                List<Vino>lista_vino=new ArrayList<>();
-                lista_vino.add(vr.getUltimo());
-                table.cargar(tblVinos, lista_vino);
+             int last_vino_by_usuario2=rr.getVinoByUser(usuario_id)
+             .stream()
+             .max(Comparator.comparing(Ranking::getVino_id))
+             .get()
+             .getVino_id();
+                lista_de_vinos_por_usuario.add(vr.getById(last_vino_by_usuario2));
+                table.cargar(tblVinos, lista_de_vinos_por_usuario);
         
-                List<Bodega>lista_bodega=new ArrayList<>();
-                lista_bodega.add(br.getLastBodegaId());
-                table.cargar(tblBodega, lista_bodega);
+                int bodega_from_last_vino=vr.getById(last_vino_by_usuario2).getBodega_id();
+                lista_de_bodegas_por_usuario.add(br.getById(bodega_from_last_vino));
+                table.cargar(tblBodega, lista_de_bodegas_por_usuario);
         
         JOptionPane.showMessageDialog(this, "Los datos se han guardado satisfactoriamente. "
                 + "Ahora puede verlos en la sección Mis Vinos");
@@ -841,7 +884,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void btnPublicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPublicarActionPerformed
         // Evento publicar vino en panel de Inicio
       try (Socket so = new Socket(InetAddress.getLocalHost(), 8900)) {
-            txaCompartir.append("\n"+username+" "+JInicio.usernameInicio+" compartió un nuevo vino: "+"\n"+
+            txaCompartir.append("\n"+ur.getConnectedUser(JInicio.txtUsuario.getText()).getCuenta_usuario()
+                    +" compartió un nuevo vino: "+"\n"+
                     vr.getUltimo()
                     .toStringView()
                     .concat(br.getLastBodegaId()
@@ -858,6 +902,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         NotaDeCata nDC = new NotaDeCata(this, true);
         nDC.setVisible(true);
         limpiarNuevoVino();
+        this.dispose();
     }//GEN-LAST:event_btnEscribirNotaActionPerformed
 
     private void BuscarBodegaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarBodegaActionPerformed
@@ -865,6 +910,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         List<Bodega> listabodega=new ArrayList<>();
         listabodega=br.getLikeNombre(txtBodega.getText());
         table.cargar(tblBusqueda, listabodega);
+        if (listabodega.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La búsqueda no produjo resultados");
+            txtBodega.setText("");
+        }
     }//GEN-LAST:event_BuscarBodegaActionPerformed
 
     private void BuscarCosechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarCosechaActionPerformed
@@ -872,6 +921,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         List<Vino> listacosecha=new ArrayList<>();
         listacosecha=vr.getByCosecha(Integer.parseInt(txtCosecha.getText()));
         table.cargar(tblBusqueda, listacosecha);
+        if (listacosecha.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La búsqueda no produjo resultados");
+            txtCosecha.setText("");
+        }
     }//GEN-LAST:event_BuscarCosechaActionPerformed
 
     private void BuscarCepasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarCepasActionPerformed
@@ -879,6 +932,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         List<Vino> listacepas=new ArrayList<>();
         listacepas=vr.getByCepas(txtCepas.getText());
         table.cargar(tblBusqueda, listacepas);
+        if (listacepas.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La búsqueda no produjo resultados");
+            txtCepas.setText("");
+        }
     }//GEN-LAST:event_BuscarCepasActionPerformed
 
     private void BuscarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarCategoriaActionPerformed
@@ -886,6 +943,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
         List<Vino>listacategoria=new ArrayList<>();
         listacategoria=vr.getByCategoria(Categoria.valueOf(cmbCategoriaBusqueda.getItemAt(cmbCategoriaBusqueda.getSelectedIndex())));
         table.cargar(tblBusqueda, listacategoria);
+        if (listacategoria.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La búsqueda no produjo resultados");
+        }
     }//GEN-LAST:event_BuscarCategoriaActionPerformed
 
     private void BuscarEnologoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarEnologoActionPerformed
@@ -893,6 +953,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         List<Vino> listaenologo=new ArrayList<>();
         listaenologo=vr.getLikeEnologo(txtEnologo.getText());
         table.cargar(tblBusqueda, listaenologo);
+        if (listaenologo.isEmpty() | listaenologo==null) {
+            JOptionPane.showMessageDialog(this, "La búsqueda no produjo resultados");
+            txtEnologo.setText("");
+        }
     }//GEN-LAST:event_BuscarEnologoActionPerformed
 
     private void BuscarTerrunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarTerrunoActionPerformed
@@ -900,6 +964,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         List<Vino>listaterruno=new ArrayList<>();
         listaterruno=vr.getLikeTerruno(txtTerruno.getText());
         table.cargar(tblBusqueda, listaterruno);
+        if (listaterruno.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La búsqueda no produjo resultados");
+            txtTerruno.setText("");
+        }
     }//GEN-LAST:event_BuscarTerrunoActionPerformed
 
     private void BuscarVinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarVinoActionPerformed
@@ -907,6 +975,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         List<Vino>listavino=new ArrayList<>();
         listavino=vr.getByNombre(txtVino.getText());
         table.cargar(tblBusqueda, listavino);
+        if (listavino.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La búsqueda no produjo resultados");
+            txtVino.setText("");
+        }
     }//GEN-LAST:event_BuscarVinoActionPerformed
 
     public static void main(String args[]) {
@@ -933,7 +1005,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -1001,7 +1073,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JTable tblBusqueda;
     private javax.swing.JTable tblVinos;
     private javax.swing.JTextArea txaCompartir;
-    private javax.swing.JTextArea txaListaNotasDeCata;
+    private javax.swing.JTextArea txaNotaDeCata;
     private javax.swing.JTextArea txaUbicacion;
     private javax.swing.JTextField txtBodega;
     private javax.swing.JTextField txtBodegaNV;

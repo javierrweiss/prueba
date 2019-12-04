@@ -1,8 +1,12 @@
 package trabajopracticopoo2.vinoapp.repositorios.interfaces;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import trabajopracticopoo2.vinoapp.entidades.Ranking;
+import trabajopracticopoo2.vinoapp.entidades.Vino;
 import trabajopracticopoo2.vinoapp.enumerados.RankingEnum;
 public interface I_RankingRepositorio {
     void save(Ranking ranking);
@@ -52,6 +56,14 @@ public interface I_RankingRepositorio {
                .filter(r->r.getTienda_id()==tienda_id)
                .findFirst()
                .get();
+    }
+    
+    default List<Ranking> getVinoByUser(int usuario_id){
+        return getAll()
+               .stream()
+               .filter(r->r.getUsuario_id()==usuario_id)
+               .sorted(Comparator.comparing(Ranking::getVino_id))
+               .collect(Collectors.toList());
     }
     
 }

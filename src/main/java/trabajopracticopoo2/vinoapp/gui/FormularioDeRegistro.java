@@ -2,7 +2,6 @@ package trabajopracticopoo2.vinoapp.gui;
 
 import ar.org.centro8.curso.java.utils.Validator;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 import trabajopracticopoo2.vinoapp.connectors.Connector;
 import trabajopracticopoo2.vinoapp.entidades.Usuario;
 import trabajopracticopoo2.vinoapp.repositorios.interfaces.I_UsuarioRepositorio;
@@ -10,11 +9,8 @@ import trabajopracticopoo2.vinoapp.repositorios.jdbc.UsuarioRepositorio;
 
 public class FormularioDeRegistro extends javax.swing.JDialog{
     I_UsuarioRepositorio ur;
-    private static JPasswordField psw=new JPasswordField("", 8);
-    protected static char[] clave=psw.getPassword();
     Validator val=new Validator();
     Usuario u = new Usuario();
-    public static String username=""; 
     public FormularioDeRegistro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -22,19 +18,33 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
         ur= new UsuarioRepositorio(Connector.getConnection());
     }
     
+    public static final char[] getpass(){
+    char[] clave_registrada=txtContraseña.getText().toCharArray();
+    return clave_registrada;
+    }
+    
     public void cargar(){
-        MenuPrincipal mP = new MenuPrincipal();
-        mP.setVisible(true);
+       JInicio Ji=new JInicio();
+       Ji.setVisible(true);
         JOptionPane.showMessageDialog(this, "Estimado "+txtNombre.getText()+" su cuenta de usuario"
-                + " se ha registrado satisfactoriamente");
+                + " se ha registrado satisfactoriamente. \n Ingrese su cuenta y contraseña para acceder a la aplicación");
         this.dispose();
     }
     
-    public boolean validar() {
-        if(!new Validator(txtCuentaUsuario).length(2, 45) | !new Validator(txtNombre).length(2, 35) 
-           | !new Validator(txtApellido).length(2, 35) | !new Validator(txtRegion).length(4, 35)
-        | !new Validator(txtCiudad).length(4, 45) | !new Validator(txtCodPostal).length(4, 12)) return false;
-    return true;
+    public boolean validarCampos() {
+        if (!new Validator(txtCuentaUsuario).length(2, 45) | !new Validator(txtNombre).length(2, 35)
+                | !new Validator(txtApellido).length(2, 35) | !new Validator(txtRegion).length(4, 35)
+                | !new Validator(txtCiudad).length(4, 45) | !new Validator(txtCodPostal).length(4, 12)) 
+            return false;
+        return true;
+    }
+    
+    public boolean validarCuentaUsuario(){
+        if (ur.verifyUsuario(txtCuentaUsuario.getText())) {
+            JOptionPane.showMessageDialog(this, "Esta cuenta de usuario ya existe.");
+            return true;
+        }
+    return false;
     }
     
     public void saveInRepository(){
@@ -48,6 +58,7 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -66,8 +77,19 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
         txtEmail = new javax.swing.JTextField();
         txtCuentaUsuario = new javax.swing.JTextField();
         txtCodPostal = new javax.swing.JTextField();
-        pswContraseñaI = new javax.swing.JPasswordField();
         cmbPais = new javax.swing.JComboBox<>();
+        txtContraseña = new javax.swing.JTextField(8);
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -112,8 +134,6 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
 
         txtCodPostal.setToolTipText("El campo Código postal no puede tener más de doce caracteres.");
 
-        pswContraseñaI.setToolTipText("La contraseña debe tener un máximo de 8 caracteres");
-
         cmbPais.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "    ", "    Afganistán", "    Albania", "    Alemania", "    Andorra", "    Angola", "    Antigua y Barbuda", "    Arabia Saudita", "    Argelia", "    Argentina", "    Armenia", "    Australia", "    Austria", "    Azerbaiyán", "    Bahamas", "    Bangladés", "    Barbados", "    Baréin", "    Bélgica", "    Belice", "    Benín", "    Bielorrusia", "    Birmania", "    Bolivia", "    Bosnia y Herzegovina", "    Botsuana", "    Brasil", "    Brunéi", "    Bulgaria", "    Burkina Faso", "    Burundi", "    Bután", "    Cabo Verde", "    Camboya", "    Camerún", "    Canadá", "    Catar", "    Chad", "    Chile", "    China", "    Chipre", "    Ciudad del Vaticano", "    Colombia", "    Comoras", "    Corea del Norte", "    Corea del Sur", "    Costa de Marfil", "    Costa Rica", "    Croacia", "    Cuba", "    Dinamarca", "    Dominica", "    Ecuador", "    Egipto", "    El Salvador", "    Emiratos Árabes Unidos", "    Eritrea", "    Eslovaquia", "    Eslovenia", "    España", "    Estados Unidos", "    Estonia", "    Etiopía", "    Filipinas", "    Finlandia", "    Fiyi", "    Francia", "    Gabón", "    Gambia", "    Georgia", "    Ghana", "    Granada", "    Grecia", "    Guatemala", "    Guyana", "    Guinea", "    Guinea ecuatorial", "    Guinea-Bisáu", "    Haití", "    Honduras", "    Hungría", "    India", "    Indonesia", "    Irak", "    Irán", "    Irlanda", "    Islandia", "    Islas Marshall", "    Islas Salomón", "    Israel", "    Italia", "    Jamaica", "    Japón", "    Jordania", "    Kazajistán", "    Kenia", "    Kirguistán", "    Kiribati", "    Kuwait", "    Laos", "    Lesoto", "    Letonia", "    Líbano", "    Liberia", "    Libia", "    Liechtenstein", "    Lituania", "    Luxemburgo", "    Macedonia del Norte", "    Madagascar", "    Malasia", "    Malaui", "    Maldivas", "    Malí", "    Malta", "    Marruecos", "    Mauricio", "    Mauritania", "    México", "    Micronesia", "    Moldavia", "    Mónaco", "    Mongolia", "    Montenegro", "    Mozambique", "    Namibia", "    Nauru", "    Nepal", "    Nicaragua", "    Níger", "    Nigeria", "    Noruega", "    Nueva Zelanda", "    Omán", "    Países Bajos", "    Pakistán", "    Palaos", "    Panamá", "    Papúa Nueva Guinea", "    Paraguay", "    Perú", "    Polonia", "    Portugal", "    Reino Unido", "    República Centroafricana", "    República Checa", "    República del Congo", "    República Democrática del Congo", "    República Dominicana", "    República Sudafricana", "    Ruanda", "    Rumanía", "    Rusia", "    Samoa", "    San Cristóbal y Nieves", "    San Marino", "    San Vicente y las Granadinas", "    Santa Lucía", "    Santo Tomé y Príncipe", "    Senegal", "    Serbia", "    Seychelles", "    Sierra Leona", "    Singapur", "    Siria", "    Somalia", "    Sri Lanka", "    Suazilandia", "    Sudán", "    Sudán del Sur", "    Suecia", "    Suiza", "    Surinam", "    Tailandia", "    Tanzania", "    Tayikistán", "    Timor Oriental", "    Togo", "    Tonga", "    Trinidad y Tobago", "    Túnez", "    Turkmenistán", "    Turquía", "    Tuvalu", "    Ucrania", "    Uganda", "    Uruguay", "    Uzbekistán", "    Vanuatu", "    Venezuela", "    Vietnam", "    Yemen", "    Yibuti", "    Zambia", "    Zimbabue" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -138,7 +158,7 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtCuentaUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                                     .addComponent(txtNombre)
-                                    .addComponent(pswContraseñaI)))
+                                    .addComponent(txtContraseña)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,7 +201,7 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
-                    .addComponent(pswContraseñaI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -227,18 +247,17 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
         txtCuentaUsuario.getAccessibleContext().setAccessibleName("Cuenta usuario");
         txtCuentaUsuario.getAccessibleContext().setAccessibleDescription("Este campo puede tener entre 2 y 45 caracteres");
         txtCodPostal.getAccessibleContext().setAccessibleName("Código Postal");
-        pswContraseñaI.getAccessibleContext().setAccessibleName("Contraseña");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-        
        //Evento registrar
-       if(!validar()) return;
+       if(!validarCampos()) return;
+       if(validarCuentaUsuario()) return;
        saveInRepository();
        cargar();
-       username=txtCuentaUsuario.getText();
+        System.out.println("clave registrada desde página de registro"+getpass());  
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     /**
@@ -250,6 +269,7 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -267,7 +287,6 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
             java.util.logging.Logger.getLogger(FormularioDeRegistro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -286,6 +305,7 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrarse;
     private javax.swing.JComboBox<String> cmbPais;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -296,10 +316,10 @@ public class FormularioDeRegistro extends javax.swing.JDialog{
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPasswordField pswContraseñaI;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtCiudad;
     private javax.swing.JTextField txtCodPostal;
+    private static javax.swing.JTextField txtContraseña;
     private javax.swing.JTextField txtCuentaUsuario;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNombre;

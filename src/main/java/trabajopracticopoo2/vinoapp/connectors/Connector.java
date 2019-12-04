@@ -23,16 +23,16 @@ public class Connector {
     }
 
     public synchronized static Connection getConnection() {
-        try { //modificado 
-            if (conn == null || conn.isClosed()) { //conn.isClosed() modificado en caso que hubiesen errores que se presentaron en trabajos de otros compañeros
+//        try { //modificado 
+//            if (conn == null || conn.isClosed()) { //conn.isClosed() modificado en caso que hubiesen errores que se presentaron en trabajos de otros compañeros
                 try {
                     Class.forName(driver);
                     conn = DriverManager.getConnection(url, user, pass);
                 } catch (Exception e) {e.printStackTrace(); }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Connector.class.getName()).log(Level.SEVERE, null, ex); //código creado por el IDE tras el "Surround with try-catch"
-        }
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Connector.class.getName()).log(Level.SEVERE, null, ex); //código creado por el IDE tras el "Surround with try-catch"
+//        }
         return conn;
     }
 }

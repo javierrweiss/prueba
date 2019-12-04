@@ -1,16 +1,14 @@
 package trabajopracticopoo2.vinoapp.gui;
-
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import trabajopracticopoo2.vinoapp.connectors.Connector;
-import static trabajopracticopoo2.vinoapp.gui.FormularioDeRegistro.clave;
 import trabajopracticopoo2.vinoapp.repositorios.jdbc.UsuarioRepositorio;
 
 public class JInicio extends javax.swing.JFrame {
-    private JPasswordField psw= new JPasswordField("", 8);
     UsuarioRepositorio ur;
-    protected static String usernameInicio="";
+    JPasswordField psw=new JPasswordField("########",8);
+    FormularioDeRegistro fr = new FormularioDeRegistro(this,true);
     public JInicio() {
         initComponents();
         setLocationRelativeTo(null);
@@ -23,7 +21,7 @@ public class JInicio extends javax.swing.JFrame {
 
         lblUsuario = new javax.swing.JLabel();
         lblContraseña = new javax.swing.JLabel();
-        pswContraseña = new javax.swing.JPasswordField();
+        pswContraseña = new javax.swing.JPasswordField(8);
         txtUsuario = new javax.swing.JTextField();
         btnIngresar = new javax.swing.JButton();
         btnRegistarse = new javax.swing.JButton();
@@ -101,24 +99,44 @@ public class JInicio extends javax.swing.JFrame {
 
     private void btnRegistarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistarseActionPerformed
         // Evento resgistrarse
-    FormularioDeRegistro fr=new FormularioDeRegistro(this, true); 
     fr.setVisible(true);
     this.dispose();
     }//GEN-LAST:event_btnRegistarseActionPerformed
-
+    /*
+    He seguido las instrucciones y demos de la página de Oracle para configurar el JPasswordField 
+    https://docs.oracle.com/javase/tutorial/uiswing/components/passwordfield.html
+    Sin embargo, no logro conseguir que trabaje bien.
+    */
+    
+    public boolean isPasswordCorrect(){
+    boolean correct=true;
+    char[] clave_registrada=fr.getpass();
+    char[] clave_ingresada=psw.getPassword();
+    if (clave_registrada.length != clave_ingresada.length) {
+            correct = false;
+        } else {
+        correct= Arrays.equals(clave_ingresada, clave_registrada);
+        }
+    Arrays.fill(clave_registrada, '0');
+    return correct;   
+    }
+    
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         // Evento ingresar
-    String usuario_ingresado=txtUsuario.getText();
-    char[] clave_ingresada=psw.getPassword();
-        if (Arrays.equals(clave, clave_ingresada) & ur.VerifyUsuario(usuario_ingresado)) {
+        String usuario_ingresado=txtUsuario.getText(); 
+        if(!ur.verifyUsuario(usuario_ingresado)) {  
+         JOptionPane.showMessageDialog(this, "Usted ha introducido una contraseña incorrecta o un usuario inexistente");
+         return; 
+        }  
+        if (isPasswordCorrect()) {
+            JOptionPane.showMessageDialog(this, "Usted ha introducido una contraseña incorrecta o un usuario inexistente");
+            return; 
+        } else {
+            JOptionPane.showMessageDialog(this, "El login se ha realizado exitosamente");
+        }
             MenuPrincipal mP = new MenuPrincipal();
             mP.setVisible(true);
             this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Usted ha introducido un usuario o una contraseña incorrecta");
-        }
-        Arrays.fill(clave, '0');
-       usernameInicio=txtUsuario.getText();
     }//GEN-LAST:event_btnIngresarActionPerformed
  
   
@@ -161,6 +179,6 @@ public class JInicio extends javax.swing.JFrame {
     private javax.swing.JLabel lblContraseña;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JPasswordField pswContraseña;
-    private javax.swing.JTextField txtUsuario;
+    protected static javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

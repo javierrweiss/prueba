@@ -34,6 +34,10 @@ private transient int tienda_id;
     public String toStringRankingView(){
      return "Ranking: "+ranking;
     }
+    
+    public String toStringVinoList(){
+     return "Vinos: "+vino_id;
+    }
 
     public int getRanking_id() {
         return ranking_id;

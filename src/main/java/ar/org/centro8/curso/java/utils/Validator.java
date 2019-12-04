@@ -45,11 +45,8 @@ public class Validator {
     }
     
 //    public boolean isEmailValid(JTextField txt){
-//        while (!txt.getText().matches("[^A-Za-z0-9.@_-~#]")){
-//            error("Usted ha proporcionado una dirección de email no válida");
-//            break;
-//        }    
-//        return true;
+//         if(!txt.getText().matches("[^A-Za-z0-9.@_-~#]"))error("Usted ha proporcionado una dirección de email no válida");
+//         return false;
 //        }
     /*
     La presente expresión regular para validar email fue tomada de 

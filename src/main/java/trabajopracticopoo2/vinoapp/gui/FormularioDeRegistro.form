@@ -60,7 +60,7 @@
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="txtCuentaUsuario" alignment="0" pref="180" max="32767" attributes="0"/>
                                   <Component id="txtNombre" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="pswContraseñaI" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtContraseña" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
@@ -122,7 +122,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                  <Component id="pswContraseñaI" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtContraseña" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -286,14 +286,6 @@
       </Properties>
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="C&#xf3;digo Postal"/>
-      </AccessibilityProperties>
-    </Component>
-    <Component class="javax.swing.JPasswordField" name="pswContrase&#xf1;aI">
-      <Properties>
-        <Property name="toolTipText" type="java.lang.String" value="La contrase&#xf1;a debe tener un m&#xe1;ximo de 8 caracteres"/>
-      </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Contrase&#xf1;a"/>
       </AccessibilityProperties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbPais">
@@ -500,6 +492,12 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtContrase&#xf1;a">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTextField(8)"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
       </AuxValues>
     </Component>
   </SubComponents>

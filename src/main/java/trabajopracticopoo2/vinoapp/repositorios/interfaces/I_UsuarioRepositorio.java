@@ -17,10 +17,20 @@ public interface I_UsuarioRepositorio {
                 .findFirst()
                 .orElse(new Usuario());
     }
-    default boolean VerifyUsuario(String cuenta_usuario) {
+   
+    default boolean verifyUsuario(String cuenta_usuario) {
     return getAll()
            .stream()
            .anyMatch(u->u.getCuenta_usuario().equals(cuenta_usuario));
+    }
+    
+    default Usuario getConnectedUser(String cuenta_usuario) {
+    return getAll()
+           .stream()
+           .filter(u->u.getCuenta_usuario()
+           .equals(cuenta_usuario))
+           .findFirst()
+           .get();
     }
     
     default Usuario getLastId(){

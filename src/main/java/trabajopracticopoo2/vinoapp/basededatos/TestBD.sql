@@ -141,3 +141,9 @@ where u.cuenta_usuario=?;
 
 select usuario_id from usuarios where cuenta_usuario="vinoadicto";
 select cuenta_usuario from usuarios;
+
+select vino_id from rankings where usuario_id=1;
+
+select * from usuarios
+order by nota_de_cata desc
+limit 10;

@@ -80,3 +80,7 @@ FOREIGN KEY (tienda_id) REFERENCES tiendas (tienda_id)
 
 
 
+-- Es necesario, con la intención de continuar y agrandar el proyecto, agregar una tabla puente
+-- llamada notas de cata que registre la relacion entre nota_por_usuario y vino_id. Sería (vino_id (FK), usuario_id  (FK)
+-- y nota_de_cata. Y habría que agregar la nota_de_cata_id en las tablas vino y usuario
+
